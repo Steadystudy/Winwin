@@ -14,6 +14,7 @@ const config: Config = {
         blue300: '#1890FF',
         background: '#F8F8F8',
         gray100: '#EBEBEB',
+        orange100: '#F5A814',
       },
     },
   },
