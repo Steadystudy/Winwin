@@ -4,7 +4,7 @@ import TicketBox from './TicketBox';
 
 const meta: Meta<typeof TicketBox> = {
   component: TicketBox,
-  title: 'TicketBox',
+  title: 'Components/TicketBox',
   tags: ['autodocs'],
   argTypes: {
     size: {

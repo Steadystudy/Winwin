@@ -4,7 +4,7 @@ import BetCard from './BetCard';
 
 const meta: Meta<typeof BetCard> = {
   component: BetCard,
-  title: 'BetCard',
+  title: 'Components/BetCard',
   tags: ['autodocs'],
   argTypes: {},
 };

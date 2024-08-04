@@ -1,14 +1,11 @@
 import Image from 'next/image';
-import logo from '../../public/icons/Logo.jpg';
 import { Flex } from 'antd';
 
 export default function Account() {
   return (
     <Flex className="flex-col w-80 h-44 shadow-md rounded-md bg-white ">
       <Flex className="items-center gap-2 p-2">
-        <div className="w-4 h-4">
-          <Image src={logo} alt="신한로고" />
-        </div>
+        <Image src={'/icons/신한.svg'} width={16} height={16} alt="신한로고" />
         <span>000-000000-000000</span>
       </Flex>
       <Flex className="flex-col justify-center items-center my-2">
