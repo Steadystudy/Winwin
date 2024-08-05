@@ -1,5 +1,8 @@
-import { Avatar, Flex, Typography } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+'use client';
+
+import { Avatar, Badge, Flex, Typography } from 'antd';
+import { UserOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { MouseEventHandler } from 'react';
 
 type Size = 'large' | 'small' | 'default';
 
@@ -8,6 +11,8 @@ type AvatarProps = {
   name?: string;
   src?: string;
   alt?: string;
+  remove?: boolean;
+  onClick?: MouseEventHandler;
 };
 
 const sizes: Record<Size, number> = {
@@ -16,12 +21,26 @@ const sizes: Record<Size, number> = {
   large: 80,
 };
 
-export default function AvatarProfile({ size = 'default', src, alt, name }: AvatarProps) {
+export default function AvatarProfile({
+  size = 'default',
+  src,
+  alt,
+  name,
+  remove = false,
+  onClick,
+}: AvatarProps) {
   const { Text } = Typography;
 
   return (
-    <Flex vertical wrap className={`items-center justify-center text-center gap-1`}>
-      <Avatar src={src} alt={alt} size={sizes[size]} icon={<UserOutlined />} />
+    <Flex
+      vertical
+      wrap
+      className={`items-center justify-center text-center gap-1`}
+      onClick={onClick}
+    >
+      <Badge count={remove ? <CloseCircleOutlined /> : ''}>
+        <Avatar src={src} alt={alt} size={sizes[size]} icon={<UserOutlined />} />
+      </Badge>
       {name && (
         <Text ellipsis style={{ width: `${sizes[size]}px` }} className={`text-xs hover:text-clip`}>
           {name}
