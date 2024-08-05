@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import BetCard from './BetCard';
+import { Flex } from 'antd';
 
 const meta: Meta<typeof BetCard> = {
   component: BetCard,
   title: 'Components/BetCard',
   tags: ['autodocs'],
+  render: () => {
+    return (
+      <Flex justify="center" className="pt-10">
+        <BetCard />
+      </Flex>
+    );
+  },
   argTypes: {},
 };
 export default meta;

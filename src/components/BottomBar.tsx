@@ -1,5 +1,6 @@
+'use client';
+
 import { Flex } from 'antd';
-import { ShopOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 
 export default function BottomBar() {
