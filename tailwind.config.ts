@@ -4,8 +4,13 @@ const config: Config = {
   content: ['./src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
+      width: {
+        '80vw': '80vw',
+        '90vw': '90vw',
+      },
       height: {
         '25vh': '25vh',
+        '70vh': '70vh',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
