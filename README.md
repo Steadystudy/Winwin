@@ -45,6 +45,11 @@
 ![React-hook-form](https://img.shields.io/badge/React_Hook_Form-FF3366?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Storybook](https://img.shields.io/badge/storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white)
 
+### 📝 State Management
+
+![Zustand](https://img.shields.io/badge/zustand-orange?style=for-the-badge&logo=zustand&logoColor=white)
+![SWR](https://img.shields.io/badge/swr-000000?style=for-the-badge&logo=swr&logoColor=%2361DAFB)
+
 ### 🛠 Tools
 
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
