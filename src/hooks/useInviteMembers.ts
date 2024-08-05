@@ -1,15 +1,17 @@
-import { useJudgeStore } from 'store/useJudgeStore';
-import { useMyteamStore } from 'store/useMyteamStore';
-import { useOpponentStore } from 'store/useOpponentStore';
+import { useRoomStore } from 'store/useRoomStore';
 import { InviteTypes } from 'types';
 
 export const useInviteMembers = (invite: InviteTypes) => {
-  const { selectedUsers, updateSelectedUsers } =
-    invite === 'myTeam'
-      ? useMyteamStore()
-      : invite === 'opponent'
-        ? useOpponentStore()
-        : useJudgeStore();
+  const { myTeam, updateMyteam, opponent, updateOpponent, judge, updateJudge } = useRoomStore();
 
-  return { selectedUsers, updateSelectedUsers };
+  switch (invite) {
+    case 'myTeam':
+      return { selectedUsers: myTeam, updateSelectedUsers: updateMyteam };
+    case 'opponent':
+      return { selectedUsers: opponent, updateSelectedUsers: updateOpponent };
+    case 'judge':
+      return { selectedUsers: judge, updateSelectedUsers: updateJudge };
+    default:
+      return { selectedUsers: [], updateSelectedUsers: () => {} };
+  }
 };
