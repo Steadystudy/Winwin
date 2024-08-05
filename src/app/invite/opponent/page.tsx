@@ -3,7 +3,7 @@ import FriendsList from 'components/FriendsList';
 import InviteNav from 'components/InviteNav';
 import SelectedInviteUsers from 'components/SelectedInviteUsers';
 
-export default function InviteMyTeampage() {
+export default function InviteOpponentpage() {
   return (
     <>
       <InviteNav from="/invite/myteam" to="/invite/judge">
