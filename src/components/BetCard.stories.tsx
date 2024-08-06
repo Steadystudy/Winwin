@@ -9,7 +9,7 @@ const meta: Meta<typeof BetCard> = {
   tags: ['autodocs'],
   render: () => {
     return (
-      <Flex justify="center" className="pt-10">
+      <Flex justify="center" className="py-10">
         <BetCard />
       </Flex>
     );

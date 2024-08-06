@@ -9,7 +9,7 @@ const meta: Meta<typeof TicketBox> = {
   tags: ['autodocs'],
   render: ({ ...args }) => {
     return (
-      <Flex justify="center" className="pt-10">
+      <Flex justify="center" className="py-10">
         <TicketBox {...args} />
       </Flex>
     );

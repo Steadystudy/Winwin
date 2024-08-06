@@ -32,12 +32,7 @@ export default function AvatarProfile({
   const { Text } = Typography;
 
   return (
-    <Flex
-      vertical
-      wrap
-      className={`items-center justify-center text-center gap-1`}
-      onClick={onClick}
-    >
+    <Flex vertical wrap className={`text-center gap-1`} onClick={onClick}>
       <Badge count={remove ? <CloseCircleOutlined /> : ''}>
         <Avatar src={src} alt={alt} size={sizes[size]} icon={<UserOutlined />} />
       </Badge>
