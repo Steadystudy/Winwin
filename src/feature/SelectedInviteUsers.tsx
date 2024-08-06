@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex } from 'antd';
-import AvatarProfile from './AvatarProfile';
+import AvatarProfile from '../components/AvatarProfile';
 import { InviteTypes, User } from 'types';
 import { useInviteMembers } from 'hooks/useInviteMembers';
 
