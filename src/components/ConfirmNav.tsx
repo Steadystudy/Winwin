@@ -20,12 +20,8 @@ export default function ConfirmNav({ from = '#', to = '#', onClick, children }: 
         </Link>
       </Flex>
       <h2>{children}</h2>
-      <Button
-        type="link"
-        onClick={onClick}
-        className="text-white hover:text-lg hover:text-white w-4"
-      >
-        Delete
+      <Button type="link" onClick={onClick} shape="circle" className="text-white">
+        <Image src={'/icons/Cancel.svg'} width={28} height={28} alt={'cancel'} />
       </Button>
     </Flex>
   );
