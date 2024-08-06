@@ -1,16 +1,15 @@
-import { Input } from 'antd';
-import FriendsList from 'components/FriendsList';
+import FriendsList from 'feature/FriendsList';
 import InviteNav from 'components/InviteNav';
-import SelectedInviteUsers from 'components/SelectedInviteUsers';
+import SelectedInviteUsers from 'feature/SelectedInviteUsers';
+import { PAGE_URL } from 'constants/url';
 
 export default function InviteMyTeampage() {
   return (
     <>
-      <InviteNav from="/" to="/invite/opponent">
+      <InviteNav from={PAGE_URL.HOME} to={PAGE_URL.INVITE_OPPONENT}>
         우리팀 초대
       </InviteNav>
       <SelectedInviteUsers invite={'myTeam'} />
-      <Input placeholder="이름 검색" />
       <FriendsList invite={'myTeam'} />
     </>
   );

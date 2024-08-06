@@ -1,16 +1,15 @@
-import { Input } from 'antd';
-import FriendsList from 'components/FriendsList';
+import FriendsList from 'feature/FriendsList';
 import InviteNav from 'components/InviteNav';
-import SelectedInviteUsers from 'components/SelectedInviteUsers';
+import SelectedInviteUsers from 'feature/SelectedInviteUsers';
+import { PAGE_URL } from 'constants/url';
 
 export default function InviteJudgepage() {
   return (
     <>
-      <InviteNav from="/opponent" to="/invite/money">
+      <InviteNav from={PAGE_URL.INVITE_OPPONENT} to={PAGE_URL.ROOM_CREATE}>
         심판 초대
       </InviteNav>
       <SelectedInviteUsers invite={'judge'} />
-      <Input placeholder="이름 검색" />
       <FriendsList invite={'judge'} />
     </>
   );
