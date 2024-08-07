@@ -4,10 +4,10 @@ import { Avatar, Badge, Flex, Typography } from 'antd';
 import { UserOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { MouseEventHandler } from 'react';
 
-type Size = 'large' | 'small' | 'default';
+export type AvatarSize = 'large' | 'small' | 'default';
 
-type AvatarProps = {
-  size?: Size;
+export type AvatarProps = {
+  size?: AvatarSize;
   name?: string;
   src?: string;
   alt?: string;
@@ -15,7 +15,7 @@ type AvatarProps = {
   onClick?: MouseEventHandler;
 };
 
-const sizes: Record<Size, number> = {
+const sizes: Record<AvatarSize, number> = {
   small: 32,
   default: 36,
   large: 80,
