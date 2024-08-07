@@ -43,16 +43,16 @@ export default function FriendsList({ invite }: FriendsListProps) {
   }, 500);
 
   return (
-    <section>
+    <section className="flex flex-col items-center mt-4">
       <Input
         variant="outlined"
-        className="w-8"
+        className="w-[80%] border-b-2"
         prefix={<UserOutlined />}
         placeholder="이름 검색"
         onChange={(e) => searchUser(e)}
       />
       {users.length > 0 ? (
-        <Flex vertical gap={16} className="h-70vh overflow-y-auto p-8">
+        <Flex vertical gap={16} className="w-full h-70vh overflow-y-auto p-8">
           {users.map((user) => (
             <Flex key={user.id} justify="space-between" align="center" className="">
               <label htmlFor={`check${user.id}`}>
@@ -63,19 +63,12 @@ export default function FriendsList({ invite }: FriendsListProps) {
               </label>
               <input
                 id={`check${user.id}`}
-                width={24}
-                height={24}
                 type="checkbox"
                 checked={isChecked(user.id)}
                 onChange={(e) => {
                   updateNewUsers(e, user);
                 }}
-                style={{
-                  width: '2rem',
-                  height: '2rem',
-                  borderColor: '#dddddd',
-                }}
-                className="rounded-full"
+                className="w-6 h-6 border-gray-300 rounded-full"
               />
             </Flex>
           ))}
