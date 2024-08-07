@@ -4,7 +4,7 @@ import { Flex, Form, Input, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import React, { useState } from 'react';
 import { useRoomStore } from 'store/useRoomStore';
-import CreateNav from '../components/CreateNav';
+import NavCreate from '../components/NavCreate';
 import { PAGE_URL } from 'constants/url';
 
 const moneyOptions = [
@@ -44,9 +44,9 @@ export default function CreateRoom() {
 
   return (
     <>
-      <CreateNav from={PAGE_URL.INVITE_JUDGE} to={PAGE_URL.ROOM_CONFIRM} onClick={onSubmit}>
+      <NavCreate from={PAGE_URL.INVITE_JUDGE} to={PAGE_URL.ROOM_CONFIRM} onClick={onSubmit}>
         방 생성
-      </CreateNav>
+      </NavCreate>
       <Form>
         <Flex vertical className="p-8" gap={32}>
           <Flex justify="space-between">

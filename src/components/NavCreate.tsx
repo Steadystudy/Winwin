@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { MouseEventHandler, ReactNode } from 'react';
 
-interface CreateNavProps {
+interface NavCreateProps {
   from?: string;
   to?: string;
   onClick: MouseEventHandler;
@@ -11,7 +11,7 @@ interface CreateNavProps {
   children: ReactNode;
 }
 
-export default function CreateNav({ from = '#', to = '#', onClick, children }: CreateNavProps) {
+export default function NavCreate({ from = '#', to = '#', onClick, children }: NavCreateProps) {
   return (
     <Flex justify="space-between" align="center" className={`h-20 p-8 bg-green-500 text-white`}>
       <Flex gap={8} align="center">

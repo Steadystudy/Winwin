@@ -3,14 +3,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
-interface InviteNavProps {
+interface NavInviteProps {
   from?: string;
   to?: string;
   bgColor?: string;
   children: ReactNode;
 }
 
-export default function InviteNav({ from = '#', to = '#', bgColor, children }: InviteNavProps) {
+export default function NavInvite({ from = '#', to = '#', bgColor, children }: NavInviteProps) {
   return (
     <Flex
       justify="space-between"

@@ -2,20 +2,20 @@
 
 import { Button, Flex } from 'antd';
 import AvatarProfile from 'components/AvatarProfile';
-import ConfirmNav from 'components/ConfirmNav';
+import NavConfirm from 'components/NavConfirm';
 
 export default function ConfirmRoom() {
   const cancelRoom = () => {};
   const transfer = () => {};
   return (
     <>
-      <ConfirmNav
+      <NavConfirm
         onClick={() => {
           cancelRoom();
         }}
       >
         타이틀이름오가지
-      </ConfirmNav>
+      </NavConfirm>
       <Flex vertical gap={32} className="p-8">
         <Flex vertical gap={4}>
           <h2>우리팀</h2>
@@ -46,11 +46,7 @@ export default function ConfirmRoom() {
           </Flex>
         </Flex>
         <Button
-          className="mx-auto font-bold text-2xl"
-          style={{
-            width: '80%',
-            height: '3rem',
-          }}
+          className="mx-auto font-bold text-2xl w-[75%] h-12 bg-green-500 text-white"
           onClick={transfer}
         >
           이체하기
