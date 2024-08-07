@@ -1,12 +1,12 @@
 'use client';
 
 import { Flex, Input } from 'antd';
-import AvatarProfile from '../components/AvatarProfile';
 import { InviteTypes, User } from 'types';
 import { useInviteMembers } from 'hooks/useInviteMembers';
 import { ChangeEvent, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import { debounce } from 'utils/debounce';
+import AvatarRow from 'components/AvatarRow';
 
 const tempUsers = [
   { id: 1, name: '아무' },
@@ -56,10 +56,7 @@ export default function FriendsList({ invite }: FriendsListProps) {
           {users.map((user) => (
             <Flex key={user.id} justify="space-between" align="center" className="">
               <label htmlFor={`check${user.id}`}>
-                <Flex align="center" gap={16}>
-                  <AvatarProfile />
-                  <span>{user.name}</span>
-                </Flex>
+                <AvatarRow gap={16} name={user.name} />
               </label>
               <input
                 id={`check${user.id}`}

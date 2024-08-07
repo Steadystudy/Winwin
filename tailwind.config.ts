@@ -15,6 +15,7 @@ const config: Config = {
       height: {
         '25vh': '25vh',
         '70vh': '70vh',
+        '80vh': '80vh',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

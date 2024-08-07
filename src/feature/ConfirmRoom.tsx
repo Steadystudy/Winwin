@@ -46,7 +46,7 @@ export default function ConfirmRoom() {
           </Flex>
         </Flex>
         <Button
-          className="mx-auto font-bold text-2xl w-[75%] h-12 bg-green-500 text-white"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2  font-bold text-2xl w-[75%] h-12 bg-green-500 text-white"
           onClick={transfer}
         >
           이체하기
