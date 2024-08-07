@@ -46,8 +46,8 @@ export default function FriendsList({ invite }: FriendsListProps) {
     <section className="flex flex-col items-center mt-4">
       <Input
         variant="outlined"
-        className="w-[80%] border-b-2"
-        prefix={<UserOutlined />}
+        className="w-[80%] border-b-2 p-2"
+        prefix={<UserOutlined className="mr-1" />}
         placeholder="이름 검색"
         onChange={(e) => searchUser(e)}
       />

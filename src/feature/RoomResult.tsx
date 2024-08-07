@@ -1,26 +1,32 @@
-'use client';
-
-import { Button, Flex } from 'antd';
-import AvatarProfile from 'components/AvatarProfile';
+import { Badge, Flex, Image } from 'antd';
 import AvatarRow from 'components/AvatarRow';
 import NavRoom from 'components/NavRoom';
-import Image from 'next/image';
 
-export default function RoomProgress() {
+export default function RoomResult() {
   return (
     <>
-      <NavRoom>타이틀길고길다</NavRoom>
+      <NavRoom>타이틀</NavRoom>
       <section className="flex flex-col h-80vh p-8">
         <Flex justify="space-between">
-          <Flex vertical align="center">
-            <span>Team</span>
-            <span>김아무개</span>
-          </Flex>
-          <Image src={'/icons/Trophy.svg'} width={40} height={40} alt={'트로피'} />
-          <Flex vertical align="center">
-            <span>Team</span>
-            <span className="text-end">이아무개</span>
-          </Flex>
+          <Badge count={'win'} color="#1890FF">
+            <Flex vertical align="center">
+              <span>Team</span>
+              <span>김아무개</span>
+            </Flex>
+          </Badge>
+          <Image
+            src={'/icons/Trophy.svg'}
+            className="-translate-x-8"
+            width={40}
+            height={40}
+            alt={'트로피'}
+          />
+          <Badge count={'lose'}>
+            <Flex vertical align="center">
+              <span>Team</span>
+              <span className="text-end">이아무개</span>
+            </Flex>
+          </Badge>
         </Flex>
         <Flex>
           <Flex vertical className="w-2/5">
@@ -43,19 +49,14 @@ export default function RoomProgress() {
         <Flex vertical gap={8}>
           <h2>상금</h2>
           <Flex align="center" justify="center">
+            <span>김아무개팀 인당</span>
             <h2>100,000원</h2>
           </Flex>
         </Flex>
         <Flex vertical gap={8}>
           <h2>심판</h2>
-          <Flex align="center" gap={8} className="ml-8">
-            <AvatarProfile />
-            <span>심판이름</span>
-          </Flex>
+          <AvatarRow gap={16} name="심판이름" />
         </Flex>
-        <Button className="absolute bottom-4 left-1/2 -translate-x-1/2 end font-bold text-2xl w-[75%] h-12 bg-blue300 text-white">
-          내기중
-        </Button>
       </section>
     </>
   );

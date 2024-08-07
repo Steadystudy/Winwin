@@ -13,7 +13,7 @@ export default function NavRoom({ children }: NavRoomProps) {
     <Flex
       align="center"
       justify="space-between"
-      className={`h-20 p-8 bg-green-500 text-white text-center`}
+      className={`h-20 p-8 bg-blue300 text-white text-center`}
     >
       <Link href={PAGE_URL.HOME}>
         <Image src={'/icons/Exit.svg'} width={32} height={32} alt={'ExitRoom'} />
