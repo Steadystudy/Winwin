@@ -1,9 +1,14 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import AntdProvider from 'provider/AntdProvider';
+import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ['latin'] });
+const pretendard = localFont({
+  src: '../static/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  variable: '--font-pretendard',
+});
 
 export const metadata: Metadata = {
   title: 'WinWin',
@@ -16,8 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className + `relative bg-background max-w-screen-sm mx-auto border`}>
+    <html lang="kr" className={`${pretendard.variable}`}>
+      <body
+        className={pretendard.className + `relative bg-background max-w-screen-sm mx-auto border`}
+      >
         <AntdProvider>{children}</AntdProvider>
       </body>
     </html>

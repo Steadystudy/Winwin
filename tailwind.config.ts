@@ -29,6 +29,9 @@ const config: Config = {
         gray100: '#EBEBEB',
         orange100: '#F5A814',
       },
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],
