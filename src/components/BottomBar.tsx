@@ -1,9 +1,17 @@
 'use client';
 
-import { Flex } from 'antd';
+import { Flex, Popover } from 'antd';
 import Image from 'next/image';
+import TicketBox from './TicketBox';
 
 export default function BottomBar() {
+  const content = (
+    <Flex gap={16}>
+      <TicketBox game="solo">개인전</TicketBox>
+      <TicketBox game="team">팀전</TicketBox>
+    </Flex>
+  );
+
   return (
     <Flex className=" fixed left-1/2 -translate-x-1/2 bottom-4 w-[90%] h-20 justify-between flex-shrink-0 rounded-3xl bg-blue100">
       <Flex justify="center" align="center" className="pl-12">
@@ -20,7 +28,9 @@ export default function BottomBar() {
             align="center"
             className="w-16 h-16 rounded-full bg-background drop-shadow-md"
           >
-            icon
+            <Popover className="bg-background" content={content} trigger={'click'}>
+              <Image src={'/icons/Money.svg'} width={40} height={40} alt={'bet'} />
+            </Popover>
           </Flex>
         </Flex>
       </Flex>

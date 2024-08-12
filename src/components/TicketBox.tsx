@@ -6,7 +6,7 @@ type Size = 'small' | 'large';
 type Game = 'solo' | 'team';
 
 interface TicketBoxProps {
-  size: Size;
+  size?: Size;
   game: Game;
   children: ReactNode;
 }

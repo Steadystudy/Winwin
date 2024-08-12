@@ -13,7 +13,12 @@ interface BetCardProps {
 
 export default function BetCard() {
   return (
-    <Flex className="w-[90%] h-36 bg-blue300 rounded-lg" wrap>
+    <Flex
+      justify="center"
+      align="center"
+      className="w-full h-36 bg-blue300 border border-blue100"
+      wrap
+    >
       <Flex align="center" className="w-1/3 pl-2">
         <AvatarProfile name="김아무" />
       </Flex>

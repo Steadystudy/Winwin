@@ -2,6 +2,7 @@ import { Avatar, Button, Flex } from 'antd';
 import Account from 'components/Account';
 import BetCard from 'components/BetCard';
 import BottomBar from 'components/BottomBar';
+import CardCarousel from 'components/CardCarousel';
 import Image from 'next/image';
 
 export default function Homepage() {
@@ -25,10 +26,7 @@ export default function Homepage() {
         <h2 className="text-2xl font-bold">진행중인 내기 (2)</h2>
         <span>더보기</span>
       </Flex>
-      <Flex vertical align="center" className=" gap-4 p-4">
-        <BetCard />
-        <BetCard />
-      </Flex>
+      <CardCarousel />
       <BottomBar />
     </div>
   );
