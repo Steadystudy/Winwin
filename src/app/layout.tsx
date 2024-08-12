@@ -10,6 +10,8 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
+console.log(pretendard.className);
+
 export const metadata: Metadata = {
   title: 'WinWin',
   description: '친구들과 내기 한판',
@@ -23,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="kr" className={`${pretendard.variable}`}>
       <body
-        className={pretendard.className + `relative bg-background max-w-screen-sm mx-auto border`}
+        className={`${pretendard.className} relative bg-background max-w-screen-sm mx-auto border`}
       >
         <AntdProvider>{children}</AntdProvider>
       </body>
