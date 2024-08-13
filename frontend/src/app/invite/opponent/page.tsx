@@ -6,7 +6,7 @@ import { PAGE_URL } from 'constants/url';
 export default function InviteOpponentpage() {
   return (
     <>
-      <NavInvite from={PAGE_URL.INVITE_MYTEAM} to={PAGE_URL.INVITE_JUDGE}>
+      <NavInvite invite="opponent" from={PAGE_URL.INVITE_MYTEAM} to={PAGE_URL.INVITE_JUDGE}>
         상대팀 초대
       </NavInvite>
       <SelectedInviteUsers invite={'opponent'} />

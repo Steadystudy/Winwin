@@ -37,7 +37,11 @@ export default function AvatarProfile({
         <Avatar src={src} alt={alt} size={sizes[size]} icon={<UserOutlined />} />
       </Badge>
       {name && (
-        <Text ellipsis style={{ width: `${sizes[size]}px` }} className={`text-xs hover:text-clip`}>
+        <Text
+          ellipsis
+          style={{ width: `${sizes[size]}px` }}
+          className={`text-xs font-bold font-pretendard`}
+        >
           {name}
         </Text>
       )}

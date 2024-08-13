@@ -26,7 +26,7 @@ export default function AvatarRow({
   return (
     <Flex align="center" gap={gap} onClick={onClick}>
       <AvatarProfile size={size} src={src} alt={alt} />
-      <Text ellipsis className={`${fontSizes[size]}`}>
+      <Text ellipsis className={`${fontSizes[size]} font-pretendard`}>
         {name}
       </Text>
     </Flex>
