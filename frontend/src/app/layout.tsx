@@ -1,16 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import AntdProvider from 'provider/AntdProvider';
-import localFont from 'next/font/local';
-
-const pretendard = localFont({
-  src: '../static/fonts/PretendardVariable.woff2',
-  display: 'swap',
-  weight: '45 920',
-  variable: '--font-pretendard',
-});
-
-console.log(pretendard.className);
+import { pretendard } from 'fonts';
 
 export const metadata: Metadata = {
   title: 'WinWin',

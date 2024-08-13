@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/react';
+import React from 'react';
+import { pretendard } from '../src/fonts';
 import '../src/app/globals.css';
 
 const customViewports = {
@@ -32,6 +34,15 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div className={`${pretendard.variable}`}>
+        <div className={`${pretendard.className}`}>
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export default preview;

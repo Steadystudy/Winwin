@@ -10,7 +10,11 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
   ],
   framework: '@storybook/nextjs',
-  staticDirs: ['../public'],
+  staticDirs: [
+    '../public',
+    { from: '../public/fonts', to: '/public/fonts' },
+    { from: '../public/icons', to: '/icons' },
+  ],
 };
 
 export default config;
