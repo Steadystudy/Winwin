@@ -3,12 +3,30 @@
 import { Flex, Popover } from 'antd';
 import Image from 'next/image';
 import TicketBox from './TicketBox';
+import { useRouter } from 'next/navigation';
+import { PAGE_URL } from 'constants/url';
 
 export default function BottomBar() {
+  const router = useRouter();
+
   const content = (
     <Flex gap={16}>
-      <TicketBox game="solo">개인전</TicketBox>
-      <TicketBox game="team">팀전</TicketBox>
+      <TicketBox
+        onClick={() => {
+          router.push(PAGE_URL.INVITE_OPPONENT);
+        }}
+        game="solo"
+      >
+        개인전
+      </TicketBox>
+      <TicketBox
+        onClick={() => {
+          router.push(PAGE_URL.INVITE_MYTEAM);
+        }}
+        game="team"
+      >
+        팀전
+      </TicketBox>
     </Flex>
   );
 
@@ -21,7 +39,7 @@ export default function BottomBar() {
         <Flex
           justify="center"
           align="center"
-          className="absolute top-[-20px] w-20 h-20 rounded-full bg-green-500"
+          className="absolute top-[-20px] w-20 h-20 rounded-full bg-green-500 hover:cursor-pointer"
         >
           <Flex
             justify="center"

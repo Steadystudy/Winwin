@@ -1,17 +1,23 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 
 type Size = 'small' | 'large';
 type Game = 'solo' | 'team';
 
 interface TicketBoxProps {
   size?: Size;
+  onClick?: MouseEventHandler<HTMLDivElement>;
   game: Game;
   children: ReactNode;
 }
 
-export default function TicketBox({ size = 'small', game = 'solo', children }: TicketBoxProps) {
+export default function TicketBox({
+  size = 'small',
+  game = 'solo',
+  onClick,
+  children,
+}: TicketBoxProps) {
   let parentSize = 'w-20 h-6';
   let circleSize = 'w-1 h-2';
 
@@ -29,7 +35,8 @@ export default function TicketBox({ size = 'small', game = 'solo', children }: T
 
   return (
     <div
-      className={`relative ${game == 'solo' ? 'bg-blue200' : 'bg-orange100'} ${parentSize} rounded-md flex justify-center items-center`}
+      onClick={onClick}
+      className={`relative ${game == 'solo' ? 'bg-blue200' : 'bg-orange100'} ${parentSize} rounded-md flex justify-center items-center hover:cursor-pointer`}
     >
       <div
         className={`absolute left-0 ${circleSize} top-1/2 transform -translate-y-1/2 bg-background rounded-r-full `}
