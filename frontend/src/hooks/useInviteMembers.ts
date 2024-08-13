@@ -1,7 +1,9 @@
 import { useRoomStore } from 'store/useRoomStore';
-import { InviteTypes } from 'types';
+import { InviteTypes, User } from 'types';
 
-export const useInviteMembers = (invite: InviteTypes) => {
+export const useInviteMembers = (
+  invite: InviteTypes,
+): { selectedUsers: User[]; updateSelectedUsers: Function } => {
   const { myTeam, updateMyteam, opponent, updateOpponent, judge, updateJudge } = useRoomStore();
 
   switch (invite) {
