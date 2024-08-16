@@ -10,9 +10,10 @@ export default function CardCarousel() {
 
   return (
     <Carousel
-      className="w-full h-40 px-4 mx-auto flex justify-center items-center"
+      className="flex justify-center items-center w-full px-4 mx-auto"
       afterChange={onChange}
-      draggable={true}
+      draggable
+      autoplay
     >
       <BetCard />
       <BetCard />

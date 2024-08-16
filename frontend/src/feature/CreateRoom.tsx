@@ -86,7 +86,7 @@ export default function CreateRoom() {
               placeholder="설명 (최대 30자)"
               onChange={(e) => setDescription(e.target.value)}
               maxLength={30}
-              autoSize={{ minRows: 2, maxRows: 4 }}
+              autoSize={{ minRows: 2, maxRows: 6 }}
             />
           </Flex>
         </Flex>

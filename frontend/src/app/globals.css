@@ -11,3 +11,7 @@ h2 {
   line-height: 2rem /* 32px */;
   font-weight: 600;
 }
+
+.slick-list {
+  border-radius: 12px;
+}
