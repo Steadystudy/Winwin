@@ -1,4 +1,5 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { CoreEntity } from 'src/common/entity/core.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
@@ -6,12 +7,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 })
 @InputType('UserInputType', { isAbstract: true })
 @ObjectType()
-export class User {
-  @PrimaryGeneratedColumn()
-  @Field()
-  id: number;
-
+export class User extends CoreEntity {
   @Column()
-  @Field()
+  @Field((type) => String)
   email: string;
 }

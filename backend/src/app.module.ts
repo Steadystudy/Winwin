@@ -8,6 +8,8 @@ import * as Joi from 'joi';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { User } from './users/entities/user.entity';
+import { RoomsModule } from './rooms/rooms.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -44,6 +46,10 @@ import { User } from './users/entities/user.entity';
     }),
 
     UsersModule,
+
+    RoomsModule,
+
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
