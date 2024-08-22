@@ -8,8 +8,10 @@ import * as Joi from 'joi';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { User } from './users/entities/user.entity';
-import { RoomsModule } from './rooms/rooms.module';
 import { CommonModule } from './common/common.module';
+import { BetsModule } from './bets/bets.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { Account } from './accounts/entities/account.entity';
 
 @Module({
   imports: [
@@ -40,16 +42,18 @@ import { CommonModule } from './common/common.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         synchronize: configService.get('NODE_ENV') !== 'prod',
-        entities: [User],
+        entities: [User, Account],
       }),
       inject: [ConfigService],
     }),
 
     UsersModule,
 
-    RoomsModule,
-
     CommonModule,
+
+    BetsModule,
+
+    AccountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
