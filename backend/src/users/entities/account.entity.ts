@@ -4,7 +4,7 @@ import { User } from 'src/users/entities/user.entity';
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity({
-  name: 'account',
+  name: 'accounts',
 })
 @InputType('AccountInputType', { isAbstract: true })
 @ObjectType()
@@ -24,22 +24,14 @@ export class Account extends CoreEntity {
   @Column({ default: '국민' })
   bankName: string;
 
-  @Field((type) => Int)
-  @Column({ type: 'bigint' })
-  accountTypeCode: number;
-
   // Feat
-  // @BeforeInsert()
-  // async createUniqueAccountTypeCode()
+  // @Field((type) => String)
+  // @Column({ default: '1000001' })
+  // accountTypeCode: string;
 
   @Field((type) => String)
   @Column()
   accountNo: string;
-
-  @BeforeInsert()
-  createAccountNo(): void {
-    this.accountNo = this.bankCode + this.accountTypeCode;
-  }
 
   @Field((type) => Date)
   @Column()
@@ -47,8 +39,8 @@ export class Account extends CoreEntity {
 
   @BeforeInsert()
   createExpiredAt(): void {
-    const date = new Date(this.createdAt);
-    date.setFullYear(this.createdAt.getFullYear() + 2);
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 2);
     this.expiredAt = date;
   }
 
