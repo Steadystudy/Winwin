@@ -5,6 +5,7 @@ export function TryCatch(errorMsg?: string) {
       try {
         return await origin.apply(this, args);
       } catch (e) {
+        console.error('Error :', e);
         return { ok: false, error: errorMsg };
       }
     };
