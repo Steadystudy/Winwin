@@ -10,8 +10,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { User } from './users/entities/user.entity';
 import { CommonModule } from './common/common.module';
 import { BetsModule } from './bets/bets.module';
-import { AccountsModule } from './accounts/accounts.module';
-import { Account } from './accounts/entities/account.entity';
+import { Account } from './users/entities/account.entity';
+import { Bet } from './bets/entities/bet.entity';
 
 @Module({
   imports: [
@@ -42,7 +42,7 @@ import { Account } from './accounts/entities/account.entity';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         synchronize: configService.get('NODE_ENV') !== 'prod',
-        entities: [User, Account],
+        entities: [User, Account, Bet],
       }),
       inject: [ConfigService],
     }),
@@ -52,8 +52,6 @@ import { Account } from './accounts/entities/account.entity';
     CommonModule,
 
     BetsModule,
-
-    AccountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

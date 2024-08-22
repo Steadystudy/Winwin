@@ -1,7 +1,7 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entity/core.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 
 type Result = 'teamOne' | 'teamTwo';
 
@@ -11,10 +11,22 @@ type Result = 'teamOne' | 'teamTwo';
 @InputType('BetInputType', { isAbstract: true })
 @ObjectType()
 export class Bet extends CoreEntity {
-  @RelationId((creator: User) => creator.id)
+  @Field((type) => User)
+  @ManyToOne((type) => User, (user) => user.betsCreated, {
+    onDelete: 'CASCADE',
+  })
+  creator: User;
+
+  @RelationId((bet: Bet) => bet.creator)
   creatorId: number;
 
-  @RelationId((judge: User) => judge.id)
+  @Field((type) => User)
+  @ManyToOne((type) => User, (user) => user.betsJudged, {
+    onDelete: 'CASCADE',
+  })
+  judge: User;
+
+  @RelationId((bet: Bet) => bet.judge)
   judgeId: number;
 
   @Field((type) => String)
@@ -34,10 +46,10 @@ export class Bet extends CoreEntity {
   result?: Result;
 
   @Field((type) => [User])
-  @Column()
-  teamOne: User[];
+  @Column('json', { nullable: true })
+  teamOne?: User[];
 
   @Field((type) => [User])
-  @Column()
-  teamTwo: User[];
+  @Column('json', { nullable: true })
+  teamTwo?: User[];
 }
