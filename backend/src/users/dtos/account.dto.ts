@@ -7,6 +7,5 @@ export class CreateAccountInput extends PickType(Account, ['owner']) {}
 
 export class CreateAccountOutput extends CoreOutput {
   @Field()
-  @Column()
   account: Account;
 }

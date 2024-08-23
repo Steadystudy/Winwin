@@ -9,6 +9,14 @@ export class CreateUserInput extends PickType(User, ['name', 'profileImg']) {}
 @ObjectType()
 export class CreateUserOutput extends CoreOutput {
   @Field()
-  @Column({ nullable: true })
   user?: User;
+}
+
+@InputType()
+export class FindUserInput extends PickType(User, ['name']) {}
+
+@ObjectType()
+export class FindUserOutput extends CoreOutput {
+  @Field()
+  user: User;
 }

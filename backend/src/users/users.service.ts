@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserInput, CreateUserOutput } from './dtos/user.dtos';
+import { CreateUserInput, CreateUserOutput, FindUserInput, FindUserOutput } from './dtos/user.dtos';
 import { TryCatch } from 'src/decorators/TryCatch.decorator';
 import { Account } from './entities/account.entity';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/account.dto';
@@ -19,6 +19,19 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return await this.usersRepository.find();
+  }
+
+  //임시 로그인
+  async findUser({ name }: FindUserInput): Promise<FindUserOutput> {
+    const user = await this.usersRepository.findOne({ where: { name } });
+
+    return { ok: true, user };
+  }
+
+  async findUserById({ id }: { id: number }): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    return user;
   }
 
   @TryCatch('유저를 등록하지 못했습니다.')
