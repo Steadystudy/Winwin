@@ -1,14 +1,24 @@
-import { Field, InputType, ObjectType, OmitType, PickType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType, OmitType, PickType } from '@nestjs/graphql';
 import { Bet } from '../entities/bet.entity';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { Column } from 'typeorm';
 
 @InputType()
-export class CreateBetInput extends OmitType(Bet, ['id', 'createdAt', 'updatedAt']) {}
+export class CreateBetInput extends PickType(Bet, [
+  'content',
+  'totalAmount',
+  'teamOne',
+  'teamTwo',
+]) {
+  @Field((type) => Int)
+  creatorId: number;
+
+  @Field((type) => Int)
+  judgeId: number;
+}
 
 @ObjectType()
 export class CreateBetOutput extends CoreOutput {
   @Field()
-  @Column({ nullable: true })
   bet?: Bet;
 }

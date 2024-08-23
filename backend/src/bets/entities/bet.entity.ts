@@ -56,11 +56,11 @@ export class Bet extends CoreEntity {
   @Column({ nullable: true })
   result?: Result;
 
-  @Field((type) => [User])
+  @Field((type) => [Int])
   @Column('json', { nullable: true })
-  teamOne?: User[];
+  teamOne?: number[];
 
-  @Field((type) => [User])
+  @Field((type) => [Int])
   @Column('json', { nullable: true })
-  teamTwo?: User[];
+  teamTwo?: number[];
 }
