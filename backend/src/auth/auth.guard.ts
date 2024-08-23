@@ -15,7 +15,6 @@ export class UserGuard implements CanActivate {
     const token = gqlContext['token'];
     if (token) {
       const decoded = this.jwtService.verify(token.toString());
-      console.log(decoded);
       if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
         const user = await this.usersService.findUserById(decoded['id']);
         if (user) {

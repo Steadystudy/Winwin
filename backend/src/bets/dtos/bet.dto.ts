@@ -19,6 +19,18 @@ export class CreateBetInput extends PickType(Bet, [
 
 @ObjectType()
 export class CreateBetOutput extends CoreOutput {
-  @Field()
+  @Field({ nullable: true })
   bet?: Bet;
 }
+
+@InputType()
+export class ChooseBetInput extends PickType(Bet, ['result']) {
+  @Field((type) => Int)
+  betId: number;
+
+  @Field((type) => Int)
+  judgeId: number;
+}
+
+@ObjectType()
+export class ChooseBetOutput extends CoreOutput {}
