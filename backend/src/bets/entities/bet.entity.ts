@@ -1,9 +1,16 @@
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { isEnum } from 'class-validator';
 import { CoreEntity } from 'src/common/entity/core.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 
 type Result = 'teamOne' | 'teamTwo';
+enum BetStatus {
+  Betting = 'Betting',
+  Betted = 'Betted',
+  Done = 'Done',
+}
+registerEnumType(BetStatus, { name: 'BetStatus' });
 
 @Entity({
   name: 'bets',
@@ -39,7 +46,11 @@ export class Bet extends CoreEntity {
 
   @Field((type) => Boolean)
   @Column({ default: false })
-  status: boolean;
+  DepositComplete: boolean;
+
+  @Column({ type: 'enum', enum: BetStatus, default: BetStatus.Betting })
+  @Field((type) => BetStatus)
+  status: BetStatus;
 
   @Field((type) => String)
   @Column({ nullable: true })
