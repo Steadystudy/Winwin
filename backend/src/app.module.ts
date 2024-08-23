@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
@@ -12,6 +10,8 @@ import { CommonModule } from './common/common.module';
 import { BetsModule } from './bets/bets.module';
 import { Account } from './users/entities/account.entity';
 import { Bet } from './bets/entities/bet.entity';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -26,6 +26,7 @@ import { Bet } from './bets/entities/bet.entity';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
+        SECRET_KEY: Joi.string().required(),
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -47,13 +48,25 @@ import { Bet } from './bets/entities/bet.entity';
       inject: [ConfigService],
     }),
 
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: (configService: ConfigService) => ({
+        global: true,
+        secret: `${configService.get('SECRET_KEY')}`,
+        signOptions: { expiresIn: '1 day' },
+      }),
+      inject: [ConfigService],
+    }),
+
     UsersModule,
 
     CommonModule,
 
     BetsModule,
+
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
