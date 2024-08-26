@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Bet } from './entities/bet.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,12 +6,16 @@ import { TryCatch } from 'src/decorators/TryCatch.decorator';
 import { ChooseBetInput, ChooseBetOutput, CreateBetInput, CreateBetOutput } from './dtos/bet.dto';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
+import { PUB_SUB } from 'src/common/common.module';
+import { PubSub } from 'graphql-subscriptions';
+import { PENDING_BET } from 'src/common/constants';
 
 @Injectable()
 export class BetsService {
   constructor(
     private readonly usersService: UsersService,
     @InjectRepository(Bet) private readonly betRepository: Repository<Bet>,
+    @Inject(PUB_SUB) private readonly pubSub: PubSub,
   ) {}
 
   async findAll(): Promise<Bet[]> {
@@ -28,6 +32,9 @@ export class BetsService {
 
     const bet = this.betRepository.create({ ...createBetInput, creator, judge });
     await this.betRepository.save(bet);
+    await this.pubSub.publish(PENDING_BET, {
+      pendingBet: { bet, creatorId: creator.id, judgeId: judge.id },
+    });
 
     return { ok: true, bet };
   }
