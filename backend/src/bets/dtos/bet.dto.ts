@@ -1,6 +1,21 @@
-import { Field, InputType, Int, ObjectType, OmitType, PickType } from '@nestjs/graphql';
+import {
+  Field,
+  InputType,
+  Int,
+  ObjectType,
+  OmitType,
+  PickType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { Bet } from '../entities/bet.entity';
 import { CoreOutput } from 'src/common/dtos/output.dto';
+
+export enum Roles {
+  PARTICIPANT = 'participant',
+  JUDGE = 'judge',
+  CREATOR = 'creator',
+}
+registerEnumType(Roles, { name: 'Roles' });
 
 @InputType()
 export class CreateBetInput extends PickType(Bet, [
@@ -39,6 +54,18 @@ export class PendingBet {
   @Field((type) => Bet)
   bet: Bet;
 
-  @Field((type) => String)
-  role: 'participant' | 'judge';
+  @Field((type) => Roles)
+  role: Roles;
 }
+
+@InputType()
+export class SendMoneyInput {
+  @Field((type) => Int)
+  betId: number;
+
+  @Field((type) => Int)
+  money: number;
+}
+
+@ObjectType()
+export class SendMoneyOutput extends CoreOutput {}

@@ -52,6 +52,10 @@ export class Bet extends CoreEntity {
   @Field((type) => BetStatus)
   status: BetStatus;
 
+  @Field((type) => [Int])
+  @Column('json', { nullable: true })
+  bettedMembers?: number[];
+
   @Field((type) => String)
   @Column({ nullable: true })
   result?: Result;

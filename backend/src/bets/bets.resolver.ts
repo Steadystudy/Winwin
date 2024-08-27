@@ -7,12 +7,15 @@ import {
   CreateBetInput,
   CreateBetOutput,
   PendingBet,
+  Roles,
+  SendMoneyInput,
+  SendMoneyOutput,
 } from './dtos/bet.dto';
 import { AuthUser } from 'src/decorators/AuthUser.decorator';
 import { Inject } from '@nestjs/common';
 import { PUB_SUB } from 'src/common/common.module';
 import { PubSub } from 'graphql-subscriptions';
-import { BET_RESULT, PENDING_BET, ROLES } from 'src/common/constants';
+import { BET_RESULT, PENDING_BET } from 'src/common/constants';
 import { User } from 'src/users/entities/user.entity';
 
 @Resolver()
@@ -25,6 +28,14 @@ export class BetsResolver {
   @Query((returns) => [Bet])
   async bets(): Promise<Bet[]> {
     return this.betsService.findAll();
+  }
+
+  @Mutation((returns) => SendMoneyOutput)
+  async sendMoney(
+    @AuthUser() authUser: User,
+    @Args('input') sendMoneyInput: SendMoneyInput,
+  ): Promise<SendMoneyOutput> {
+    return await this.betsService.sendMoney(authUser, sendMoneyInput);
   }
 
   @Mutation((returns) => CreateBetOutput)
@@ -40,7 +51,15 @@ export class BetsResolver {
       return bet.teamOne.concat(bet.teamTwo).includes(user.id) || user.id == bet.judgeId;
     },
     resolve: ({ pendingBet: { bet } }, _, { user }) => {
-      return { bet, role: user.id === bet.judgeId ? ROLES.JUDGE : ROLES.PARTICIPANT };
+      return {
+        bet,
+        role:
+          user.id === bet.judgeId
+            ? Roles.JUDGE
+            : user.id === bet.creatorId
+              ? Roles.CREATOR
+              : Roles.PARTICIPANT,
+      };
     },
   })
   pendingBet() {
