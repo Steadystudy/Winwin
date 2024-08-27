@@ -41,7 +41,7 @@ export class UsersService {
     if (accountResult.ok === false) {
       return { ok: false, error: accountResult.error };
     }
-    user.accounts = [accountResult.account];
+    user.account = accountResult.account;
 
     await this.usersRepository.save(user);
 

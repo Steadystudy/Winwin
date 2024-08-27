@@ -1,7 +1,7 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entity/core.entity';
 import { User } from 'src/users/entities/user.entity';
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity({
   name: 'accounts',
@@ -10,7 +10,7 @@ import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 @ObjectType()
 export class Account extends CoreEntity {
   @Field((type) => User)
-  @ManyToOne((type) => User, (user) => user.accounts, {
+  @OneToOne((type) => User, (user) => user.account, {
     onDelete: 'CASCADE',
   })
   @JoinColumn()
