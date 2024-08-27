@@ -31,11 +31,21 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      installSubscriptionHandlers: true,
       autoSchemaFile: true,
-      context: async ({ req }) => {
+      subscriptions: {
+        'subscriptions-transport-ws': {
+          onConnect: (connectionParams: any) => {
+            return {
+              token: connectionParams['x-jwt'],
+            };
+          },
+        },
+      },
+      context: async ({ req, connection }) => {
         const TOKEN_KEY = 'x-jwt';
         if (req) {
-          return { token: req.headers[TOKEN_KEY] };
+          return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY] };
         }
       },
     }),
