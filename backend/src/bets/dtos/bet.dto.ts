@@ -1,7 +1,6 @@
 import { Field, InputType, Int, ObjectType, OmitType, PickType } from '@nestjs/graphql';
 import { Bet } from '../entities/bet.entity';
 import { CoreOutput } from 'src/common/dtos/output.dto';
-import { Column } from 'typeorm';
 
 @InputType()
 export class CreateBetInput extends PickType(Bet, [
@@ -34,3 +33,12 @@ export class ChooseBetInput extends PickType(Bet, ['result']) {
 
 @ObjectType()
 export class ChooseBetOutput extends CoreOutput {}
+
+@ObjectType()
+export class PendingBet {
+  @Field((type) => Bet)
+  bet: Bet;
+
+  @Field((type) => String)
+  role: 'participant' | 'judge';
+}

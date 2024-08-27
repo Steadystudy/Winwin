@@ -8,7 +8,7 @@ import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
 import { PUB_SUB } from 'src/common/common.module';
 import { PubSub } from 'graphql-subscriptions';
-import { PENDING_BET } from 'src/common/constants';
+import { BET_RESULT, PENDING_BET } from 'src/common/constants';
 
 @Injectable()
 export class BetsService {
@@ -33,18 +33,24 @@ export class BetsService {
     const bet = this.betRepository.create({ ...createBetInput, creator, judge });
     await this.betRepository.save(bet);
     await this.pubSub.publish(PENDING_BET, {
-      pendingBet: { bet, creatorId: creator.id, judgeId: judge.id },
+      pendingBet: { bet },
     });
 
     return { ok: true, bet };
   }
 
+  @TryCatch('결과를 저장하지 못했습니다.')
   async chooseBet(authUser: User, chooseBetInput: ChooseBetInput): Promise<ChooseBetOutput> {
-    if (authUser.id !== chooseBetInput.judgeId) {
+    const { betId, judgeId, result } = chooseBetInput;
+    if (authUser.id !== judgeId) {
       return { ok: false, error: '내기 심판 권한이 없습니다.' };
     }
-
-    //TODO - 내기 결과 입력
+    const bet = await this.betRepository.findOne({ where: { id: betId } });
+    bet.result = result;
+    await this.betRepository.save(bet);
+    await this.pubSub.publish(BET_RESULT, {
+      betResult: { bet },
+    });
 
     return { ok: true };
   }
