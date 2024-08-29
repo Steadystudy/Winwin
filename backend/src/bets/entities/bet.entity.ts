@@ -5,7 +5,8 @@ import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 
 type Result = 'teamOne' | 'teamTwo';
-enum BetStatus {
+export enum BetStatus {
+  Canceled = 'Canceled',
   Betting = 'Betting',
   Betted = 'Betted',
   Done = 'Done',

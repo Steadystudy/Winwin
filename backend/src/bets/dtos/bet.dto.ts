@@ -38,7 +38,7 @@ export class CreateBetOutput extends CoreOutput {
 }
 
 @InputType()
-export class ChooseBetInput extends PickType(Bet, ['result']) {
+export class JudgeBetInput extends PickType(Bet, ['result']) {
   @Field((type) => Int)
   betId: number;
 
@@ -47,7 +47,7 @@ export class ChooseBetInput extends PickType(Bet, ['result']) {
 }
 
 @ObjectType()
-export class ChooseBetOutput extends CoreOutput {}
+export class JudgeBetOutput extends CoreOutput {}
 
 @ObjectType()
 export class PendingBet {
@@ -69,3 +69,12 @@ export class SendMoneyInput {
 
 @ObjectType()
 export class SendMoneyOutput extends CoreOutput {}
+
+@InputType()
+export class CancelBetInput {
+  @Field((type) => Int)
+  betId: number;
+}
+
+@ObjectType()
+export class CancelBetOutput extends CoreOutput {}
