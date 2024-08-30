@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import AntdProvider from 'provider/AntdProvider';
 import { pretendard } from 'fonts';
+import ApolloClientProvier from 'provider/ApolloProvider';
 
 export const metadata: Metadata = {
   title: 'WinWin',
@@ -18,7 +19,9 @@ export default function RootLayout({
       <body
         className={`${pretendard.className} relative bg-background max-w-screen-sm mx-auto border`}
       >
-        <AntdProvider>{children}</AntdProvider>
+        <ApolloClientProvier>
+          <AntdProvider>{children}</AntdProvider>
+        </ApolloClientProvier>
       </body>
     </html>
   );
