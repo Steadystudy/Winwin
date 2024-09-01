@@ -36,7 +36,7 @@
 
 ### 배포페이지
 
-[Storybook 배포페이지](https://651fd2521967afdc6589d5eb-ywlfyuyzgp.chromatic.com/?path=/)
+[Storybook 배포페이지](https://651fd2521967afdc6589d5eb-rxdjcjxrjb.chromatic.com/?path=/)
 
 ### 📃 Languages / Libraries
 
