@@ -1,12 +1,13 @@
-'use clinet';
+'use client';
 
 import { gql, useMutation } from '@apollo/client';
 import { LOCALSTORAGE_TOKEN } from '../constants';
 import { authTokenVar, isLoggedInVar } from 'provider/ApolloProvider';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { LoginMutation } from '__generated__/graphql';
 
 const LOGIN_MUTATION = gql`
-  mutation loginMuation($loginInput: LoginInput!) {
+  mutation login($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
       token
@@ -17,10 +18,9 @@ const LOGIN_MUTATION = gql`
 
 export default function LoginForm() {
   const [name, setName] = useState('');
-  // loginMutation 타입
-  const onCompleted = (data: any) => {
+  const onCompleted = (data: LoginMutation) => {
     const {
-      login: { ok, token },
+      login: { ok, token, error },
     } = data;
     if (ok && token) {
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
@@ -28,15 +28,21 @@ export default function LoginForm() {
       isLoggedInVar(true);
     }
   };
-  const [loginMuation, { loading, data: loginResult }] = useMutation(LOGIN_MUTATION, {
-    onCompleted,
-  });
+  const [loginMuation, { loading, data: loginResult }] = useMutation<LoginMutation>(
+    LOGIN_MUTATION,
+    {
+      onCompleted,
+    },
+  );
 
-  const onSubmit = () => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!loading) {
       loginMuation({
         variables: {
-          name,
+          loginInput: {
+            name,
+          },
         },
       });
     }
@@ -49,6 +55,7 @@ export default function LoginForm() {
           setName(e.target.value);
         }}
       />
+      <button>submit</button>
     </form>
   );
 }
