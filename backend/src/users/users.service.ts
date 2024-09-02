@@ -28,10 +28,17 @@ export class UsersService {
     return { ok: true, user };
   }
 
-  async findUserById({ id }: { id: number }): Promise<User> {
+  async findUserById(id: number): Promise<User> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
     return user;
+  }
+
+  async getUserWithFriends(userId: number): Promise<User> {
+    return this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['friends'],
+    });
   }
 
   @TryCatch('유저를 등록하지 못했습니다.')
@@ -49,7 +56,7 @@ export class UsersService {
   }
 
   @TryCatch('계좌를 생성하지 못했습니다.')
-  private async createAccount(createAccount: CreateAccountInput): Promise<CreateAccountOutput> {
+  async createAccount(createAccount: CreateAccountInput): Promise<CreateAccountOutput> {
     const account = this.accountRepository.create(createAccount);
     account.bankCode = this.bankCode;
     account.accountNo = String(Number(this.bankCode) + this.recentAccountNo);
@@ -58,5 +65,21 @@ export class UsersService {
     this.recentAccountNo += Math.floor(Math.random() * 10);
 
     return { ok: true, account: savedAccount };
+  }
+
+  @TryCatch('친구 연결하지 못했습니다.')
+  async createFriends(authUser: User, { id }) {
+    const user = await this.findUserById(authUser.id);
+    const friend = await this.findUserById(id);
+
+    if (user && friend) {
+      user.friends = [...(user.friends || []), friend];
+      console.log(user.friends);
+      await this.usersRepository.save(user);
+      friend.friends = [...(friend.friends || []), user];
+      await this.usersRepository.save(friend);
+    }
+
+    return { ok: true, user };
   }
 }

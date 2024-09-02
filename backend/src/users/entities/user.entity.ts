@@ -1,7 +1,16 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Account } from 'src/users/entities/account.entity';
 import { CoreEntity } from 'src/common/entity/core.entity';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Bet } from 'src/bets/entities/bet.entity';
 import { Length } from 'class-validator';
 
@@ -43,4 +52,12 @@ export class User extends CoreEntity {
     nullable: true,
   })
   betsJudged?: Bet[];
+
+  @Field((type) => [User], { nullable: true })
+  @JoinTable()
+  @ManyToMany((type) => User, (user) => user.friends, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  friends?: User[];
 }

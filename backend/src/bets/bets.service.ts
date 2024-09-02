@@ -41,8 +41,8 @@ export class BetsService {
     if (authUser.id !== createBetInput.creatorId) {
       return { ok: false, error: '내기 생성자와 로그인한 유저가 다릅니다.' };
     }
-    const creator = await this.usersService.findUserById({ id: createBetInput.creatorId });
-    const judge = await this.usersService.findUserById({ id: createBetInput.judgeId });
+    const creator = await this.usersService.findUserById(createBetInput.creatorId);
+    const judge = await this.usersService.findUserById(createBetInput.judgeId);
 
     const bet = this.betRepository.create({ ...createBetInput, creator, judge });
     await this.betRepository.save(bet);

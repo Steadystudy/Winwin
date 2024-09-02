@@ -20,3 +20,9 @@ export class FindUserOutput extends CoreOutput {
   @Field()
   user: User;
 }
+
+@InputType()
+export class CreateFriendsInput extends PickType(User, ['id']) {}
+
+@ObjectType()
+export class CreateFriendsOutput extends CoreOutput {}

@@ -1,7 +1,15 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
-import { CreateUserInput, CreateUserOutput, FindUserInput, FindUserOutput } from './dtos/user.dtos';
+import {
+  CreateFriendsInput,
+  CreateFriendsOutput,
+  CreateUserInput,
+  CreateUserOutput,
+  FindUserInput,
+  FindUserOutput,
+} from './dtos/user.dtos';
+import { AuthUser } from 'src/decorators/AuthUser.decorator';
 
 @Resolver()
 export class UsersResolver {
@@ -20,5 +28,18 @@ export class UsersResolver {
   @Mutation((returns) => CreateUserOutput)
   async createUser(@Args('input') createUserInput: CreateUserInput): Promise<CreateUserOutput> {
     return await this.usersService.createUser(createUserInput);
+  }
+
+  @Mutation((returns) => CreateFriendsOutput)
+  async createFriends(
+    @AuthUser() authUser: User,
+    @Args('input') createFriendsInput: CreateFriendsInput,
+  ): Promise<CreateFriendsOutput> {
+    return await this.usersService.createFriends(authUser, createFriendsInput);
+  }
+
+  @Query((returns) => User)
+  async getUserWithFriends(@AuthUser() authUser): Promise<User> {
+    return await this.usersService.getUserWithFriends(authUser.id);
   }
 }
