@@ -11,7 +11,8 @@ import { LOCALSTORAGE_TOKEN } from '../constants';
 import { PropsWithChildren } from 'react';
 import { setContext } from '@apollo/client/link/context';
 
-const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
+const token =
+  typeof window !== 'undefined' ? window.localStorage.getItem(LOCALSTORAGE_TOKEN) : null;
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
 });

@@ -74,6 +74,16 @@ export type CreateBetOutput = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type CreateFriendsInput = {
+  id: Scalars['Float']['input'];
+};
+
+export type CreateFriendsOutput = {
+  __typename?: 'CreateFriendsOutput';
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
 export type CreateUserInput = {
   name: Scalars['String']['input'];
   profileImg?: InputMaybe<Scalars['String']['input']>;
@@ -110,6 +120,7 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createBet: CreateBetOutput;
+  createFriends: CreateFriendsOutput;
   createUser: CreateUserOutput;
   judgeBet: CreateBetOutput;
   login: LoginOutput;
@@ -119,6 +130,11 @@ export type Mutation = {
 
 export type MutationCreateBetArgs = {
   input: CreateBetInput;
+};
+
+
+export type MutationCreateFriendsArgs = {
+  input: CreateFriendsInput;
 };
 
 
@@ -151,6 +167,7 @@ export type Query = {
   __typename?: 'Query';
   bets: Array<Bet>;
   findUser: User;
+  getUserWithFriends: User;
   me: Array<User>;
 };
 
@@ -191,6 +208,7 @@ export type User = {
   betsJoined?: Maybe<Array<Bet>>;
   betsJudged?: Maybe<Array<Bet>>;
   createdAt: Scalars['DateTime']['output'];
+  friends?: Maybe<Array<User>>;
   id: Scalars['Float']['output'];
   name: Scalars['String']['output'];
   profileImg?: Maybe<Scalars['String']['output']>;
