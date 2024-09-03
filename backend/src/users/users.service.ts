@@ -21,6 +21,15 @@ export class UsersService {
     return await this.usersRepository.find();
   }
 
+  async me(userId: number): Promise<User> {
+    const me = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['friends', 'betsCreated', 'betsJudged', 'account'],
+    });
+
+    return me;
+  }
+
   //임시 로그인
   async findUser({ name }: FindUserInput): Promise<FindUserOutput> {
     const user = await this.usersRepository.findOne({ where: { name } });
@@ -35,10 +44,12 @@ export class UsersService {
   }
 
   async getUserWithFriends(userId: number): Promise<User> {
-    return this.usersRepository.findOne({
+    const user = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['friends'],
     });
+
+    return user;
   }
 
   @TryCatch('유저를 등록하지 못했습니다.')
@@ -69,12 +80,12 @@ export class UsersService {
 
   @TryCatch('친구 연결하지 못했습니다.')
   async createFriends(authUser: User, { id }) {
-    const user = await this.findUserById(authUser.id);
-    const friend = await this.findUserById(id);
+    const user = await this.getUserWithFriends(authUser.id);
+    const friend = await this.getUserWithFriends(id);
 
     if (user && friend) {
-      user.friends = [...(user.friends || []), friend];
       console.log(user.friends);
+      user.friends = [...(user.friends || []), friend];
       await this.usersRepository.save(user);
       friend.friends = [...(friend.friends || []), user];
       await this.usersRepository.save(friend);

@@ -15,9 +15,14 @@ import { AuthUser } from 'src/decorators/AuthUser.decorator';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query((returns) => [User])
-  async me(): Promise<User[]> {
-    return this.usersService.findAll();
+  @Query((returns) => User)
+  async me(@AuthUser() authUser: User): Promise<User> {
+    return await this.usersService.me(authUser.id);
+  }
+
+  @Query((returns) => User)
+  async getUserWithFriends(@AuthUser() authUser: User): Promise<User> {
+    return await this.usersService.getUserWithFriends(authUser.id);
   }
 
   @Query((returns) => User)
@@ -36,10 +41,5 @@ export class UsersResolver {
     @Args('input') createFriendsInput: CreateFriendsInput,
   ): Promise<CreateFriendsOutput> {
     return await this.usersService.createFriends(authUser, createFriendsInput);
-  }
-
-  @Query((returns) => User)
-  async getUserWithFriends(@AuthUser() authUser): Promise<User> {
-    return await this.usersService.getUserWithFriends(authUser.id);
   }
 }
