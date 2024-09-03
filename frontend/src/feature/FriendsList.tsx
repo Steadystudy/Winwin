@@ -1,28 +1,23 @@
 'use client';
 
 import { Flex, Input } from 'antd';
-import { InviteTypes, User } from 'types';
+import { InviteTypes } from 'types';
 import { useInviteMembers } from 'hooks/useInviteMembers';
 import { ChangeEvent, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import { debounce } from 'utils/debounce';
 import AvatarRow from 'components/AvatarRow';
-
-const tempUsers = [
-  { id: 1, name: '아무' },
-  { id: 2, name: '개' },
-  { id: 3, name: '나비' },
-  { id: 4, name: '나비' },
-  { id: 5, name: '나비' },
-];
+import { useMe } from 'hooks/useMe';
+import { User } from '__generated__/graphql';
 
 interface FriendsListProps {
   invite: InviteTypes;
 }
 
 export default function FriendsList({ invite }: FriendsListProps) {
+  const { me, error, loading } = useMe();
   const { selectedUsers, updateSelectedUsers } = useInviteMembers(invite);
-  const [users, setUsers] = useState<User[]>(tempUsers);
+  const [users, setUsers] = useState<User[]>(me?.friends || []);
 
   const isChecked = (id: number) => {
     const filtered = selectedUsers.filter((user) => user.id === id);
@@ -38,7 +33,7 @@ export default function FriendsList({ invite }: FriendsListProps) {
 
   const searchUser = debounce((e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;
-    const filtered = name === '' ? tempUsers : tempUsers.filter((user) => user.name.includes(name));
+    const filtered = name === '' ? users : users.filter((user) => user.name.includes(name));
     setUsers(filtered);
   }, 500);
 
