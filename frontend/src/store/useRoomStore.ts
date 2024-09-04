@@ -1,4 +1,4 @@
-import { User } from 'types';
+import { User } from '__generated__/graphql';
 import { create } from 'zustand';
 
 type State = {

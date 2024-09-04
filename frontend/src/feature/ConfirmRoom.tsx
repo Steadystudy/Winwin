@@ -3,20 +3,25 @@
 import { Button, Flex } from 'antd';
 import AvatarProfile from 'components/AvatarProfile';
 import NavConfirm from 'components/NavConfirm';
+import { PAGE_URL } from 'constants/url';
+import { useRoomStore } from 'store/useRoomStore';
 
 export default function ConfirmRoom() {
+  const { judge, myTeam, opponent } = useRoomStore();
+
   const cancelRoom = () => {};
   const transfer = () => {};
   return (
     <>
       <NavConfirm
+        from={PAGE_URL.HOME}
         onClick={() => {
           cancelRoom();
         }}
       >
         타이틀이름오가지
       </NavConfirm>
-      <Flex vertical gap={32} className="p-8">
+      <Flex vertical gap={32} className="p-8 h-full">
         <Flex vertical gap={4}>
           <h2>우리팀</h2>
           <Flex>

@@ -16,8 +16,9 @@ interface FriendsListProps {
 
 export default function FriendsList({ invite }: FriendsListProps) {
   const { me, error, loading } = useMe();
+  const initList = me?.friends || [];
   const { selectedUsers, updateSelectedUsers } = useInviteMembers(invite);
-  const [users, setUsers] = useState<User[]>(me?.friends || []);
+  const [users, setUsers] = useState<User[]>(initList);
 
   const isChecked = (id: number) => {
     const filtered = selectedUsers.filter((user) => user.id === id);
@@ -33,7 +34,7 @@ export default function FriendsList({ invite }: FriendsListProps) {
 
   const searchUser = debounce((e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;
-    const filtered = name === '' ? users : users.filter((user) => user.name.includes(name));
+    const filtered = name === '' ? initList : users.filter((user) => user.name.includes(name));
     setUsers(filtered);
   }, 500);
 

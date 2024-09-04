@@ -37,17 +37,16 @@ export type Account = {
 export type Bet = {
   __typename?: 'Bet';
   DepositComplete: Scalars['Boolean']['output'];
-  bettedMembers: Array<Scalars['Int']['output']>;
   content: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   creator: User;
   id: Scalars['Float']['output'];
   judge: User;
   membersJoined: Array<User>;
-  result: Scalars['String']['output'];
+  result: Scalars['Float']['output'];
   status: BetStatus;
-  teamOne: Array<Scalars['Int']['output']>;
-  teamTwo: Array<Scalars['Int']['output']>;
+  teams: Array<BetUser>;
+  title: Scalars['String']['output'];
   totalAmount: Scalars['Int']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
@@ -59,12 +58,28 @@ export enum BetStatus {
   Done = 'Done'
 }
 
+export type BetUser = {
+  __typename?: 'BetUser';
+  account?: Maybe<Array<Account>>;
+  betsCreated?: Maybe<Array<Bet>>;
+  betsJoined?: Maybe<Array<Bet>>;
+  betsJudged?: Maybe<Array<Bet>>;
+  createdAt: Scalars['DateTime']['output'];
+  friends?: Maybe<Array<User>>;
+  id: Scalars['Float']['output'];
+  isBet: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  profileImg?: Maybe<Scalars['String']['output']>;
+  team: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
 export type CreateBetInput = {
   content: Scalars['String']['input'];
   creatorId: Scalars['Int']['input'];
   judgeId: Scalars['Int']['input'];
-  teamOne: Array<Scalars['Int']['input']>;
-  teamTwo: Array<Scalars['Int']['input']>;
+  members: Array<MemberType>;
+  title: Scalars['String']['input'];
   totalAmount: Scalars['Int']['input'];
 };
 
@@ -101,10 +116,21 @@ export type FindUserInput = {
   name: Scalars['String']['input'];
 };
 
+export type GetBetInput = {
+  betId: Scalars['Int']['input'];
+};
+
+export type GetBetOutput = {
+  __typename?: 'GetBetOutput';
+  bet: Bet;
+  error?: Maybe<Scalars['String']['output']>;
+  ok: Scalars['Boolean']['output'];
+};
+
 export type JudgeBetInput = {
   betId: Scalars['Int']['input'];
   judgeId: Scalars['Int']['input'];
-  result: Scalars['String']['input'];
+  result: Scalars['Float']['input'];
 };
 
 export type LoginInput = {
@@ -116,6 +142,11 @@ export type LoginOutput = {
   error?: Maybe<Scalars['String']['output']>;
   ok: Scalars['Boolean']['output'];
   token?: Maybe<Scalars['String']['output']>;
+};
+
+export type MemberType = {
+  id: Scalars['Float']['input'];
+  team: Scalars['Float']['input'];
 };
 
 export type Mutation = {
@@ -168,6 +199,7 @@ export type Query = {
   __typename?: 'Query';
   bets: Array<Bet>;
   findUser: User;
+  getBetById: GetBetOutput;
   getUserWithFriends: User;
   me: User;
 };
@@ -175,6 +207,11 @@ export type Query = {
 
 export type QueryFindUserArgs = {
   input: FindUserInput;
+};
+
+
+export type QueryGetBetByIdArgs = {
+  input: GetBetInput;
 };
 
 export enum Roles {
@@ -216,6 +253,13 @@ export type User = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type CreateBetMutationVariables = Exact<{
+  createBetInput: CreateBetInput;
+}>;
+
+
+export type CreateBetMutation = { __typename?: 'Mutation', createBet: { __typename?: 'CreateBetOutput', ok: boolean, error?: string | null, bet?: { __typename?: 'Bet', id: number } | null } };
+
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
@@ -229,5 +273,6 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, createdAt: any, updatedAt: any, name: string, profileImg?: string | null, betsCreated?: Array<{ __typename?: 'Bet', id: number }> | null, friends?: Array<{ __typename?: 'User', id: number, createdAt: any, updatedAt: any, name: string, profileImg?: string | null }> | null } };
 
 
+export const CreateBetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createBet"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createBetInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateBetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBet"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createBetInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"bet"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<CreateBetMutation, CreateBetMutationVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ok"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileImg"}},{"kind":"Field","name":{"kind":"Name","value":"betsCreated"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"friends"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileImg"}}]}}]}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;

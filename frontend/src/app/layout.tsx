@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="kr" className={`${pretendard.variable}`}>
       <body
-        className={`${pretendard.className} relative bg-background max-w-screen-sm mx-auto border`}
+        className={`${pretendard.className} relative h-[100vh] bg-background max-w-screen-sm mx-auto border`}
       >
         <ApolloClientProvier>
           <AntdProvider>{children}</AntdProvider>

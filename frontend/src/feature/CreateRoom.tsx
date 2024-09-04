@@ -6,6 +6,9 @@ import React, { useState } from 'react';
 import { useRoomStore } from 'store/useRoomStore';
 import NavCreate from '../components/NavCreate';
 import { PAGE_URL } from 'constants/url';
+import { gql, useMutation } from '@apollo/client';
+import { CreateBetInput, CreateBetOutput } from '__generated__/graphql';
+import { useMe } from 'hooks/useMe';
 
 const moneyOptions = [
   {
@@ -31,14 +34,53 @@ const moneyOptions = [
   },
 ];
 
+const CreateBet_Mutation = gql`
+  mutation createBet($createBetInput: CreateBetInput!) {
+    createBet(input: $createBetInput) {
+      ok
+      error
+      bet {
+        id
+      }
+    }
+  }
+`;
+
 export default function CreateRoom() {
   const [money, setMoney] = useState(10000);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const { myTeam, opponent, judge, reset } = useRoomStore();
+  const [createBet] = useMutation<CreateBetOutput>(CreateBet_Mutation);
+  const { me } = useMe();
 
-  const onSubmit = () => {
-    // submit
+  const onSubmit = async () => {
+    if (!me) return;
+
+    const team1 = myTeam.map((user) => ({ id: user.id, team: 1 }));
+    team1.push({ id: me.id, team: 1 });
+    const team2 = opponent.map((user) => ({ id: user.id, team: 2 }));
+    const members = team1.concat(team2);
+    const createBetInput = {
+      title,
+      creatorId: me.id,
+      judgeId: judge[0]?.id || me.id,
+      totalAmount: money,
+      members: members,
+      content: description,
+    };
+
+    try {
+      const { data } = await createBet({
+        variables: {
+          createBetInput,
+        },
+      });
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
+
     reset();
   };
 
