@@ -9,9 +9,11 @@ export type AvatarSize = 'large' | 'small' | 'default';
 export type AvatarProps = {
   size?: AvatarSize;
   name?: string;
-  src?: string;
+  src?: string | null;
   alt?: string;
   remove?: boolean;
+  vertical?: boolean;
+  ellipsis?: boolean;
   onClick?: MouseEventHandler;
 };
 
@@ -26,21 +28,34 @@ export default function AvatarProfile({
   src,
   alt,
   name,
+  ellipsis = true,
+  vertical = true,
   remove = false,
   onClick,
 }: AvatarProps) {
   const { Text } = Typography;
 
   return (
-    <Flex vertical wrap className={`text-center gap-1`} onClick={onClick}>
+    <Flex
+      vertical={vertical}
+      justify="center"
+      align="center"
+      wrap
+      className={`text-center gap-1 ${onClick && 'cursor-pointer'}`}
+      onClick={onClick}
+    >
       <Badge count={remove ? <CloseCircleOutlined /> : ''}>
-        <Avatar src={src} alt={alt} size={sizes[size]} icon={<UserOutlined />} />
+        {src ? (
+          <Avatar src={src} alt={alt} size={sizes[size]} />
+        ) : (
+          <Avatar size={sizes[size]} icon={<UserOutlined />} />
+        )}
       </Badge>
       {name && (
         <Text
-          ellipsis
-          style={{ width: `${sizes[size]}px` }}
-          className={`text-xs font-bold font-pretendard`}
+          ellipsis={ellipsis}
+          style={{ width: `${ellipsis ? `${sizes[size] + 20}px}` : 'full'}` }}
+          className={`${size === 'small' ? 'text-sm' : 'text-base'} font-bold font-pretendard`}
         >
           {name}
         </Text>
