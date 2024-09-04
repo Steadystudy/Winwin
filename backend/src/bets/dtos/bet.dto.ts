@@ -28,7 +28,7 @@ export class Member {
 }
 
 @InputType()
-export class CreateBetInput extends PickType(Bet, ['content', 'totalAmount']) {
+export class CreateBetInput extends PickType(Bet, ['title', 'content', 'totalAmount']) {
   @Field((type) => Int)
   creatorId: number;
 

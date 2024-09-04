@@ -38,6 +38,10 @@ export class Bet extends CoreEntity {
 
   @Field((type) => String)
   @Column()
+  title: string;
+
+  @Field((type) => String)
+  @Column()
   content: string;
 
   @Field((type) => Int)
@@ -57,6 +61,10 @@ export class Bet extends CoreEntity {
   result?: number;
 
   @Field((type) => [BetUser])
+  @Column('json', { nullable: true })
+  teams: BetUser[];
+
+  @Field((type) => [User])
   @ManyToMany((type) => User, (user) => user.betsJoined, {
     onDelete: 'CASCADE',
     nullable: true,
@@ -66,5 +74,5 @@ export class Bet extends CoreEntity {
     joinColumn: { name: 'bets', referencedColumnName: 'id' }, // 이 테이블의 외래 키
     inverseJoinColumn: { name: 'users', referencedColumnName: 'id' },
   })
-  membersJoined?: BetUser[];
+  membersJoined?: User[];
 }

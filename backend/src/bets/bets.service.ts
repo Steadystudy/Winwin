@@ -68,6 +68,7 @@ export class BetsService {
     const bet = await this.betRepository.save(tempBet);
 
     bet.membersJoined = betUsers;
+    bet.teams = betUsers;
     const savedBet = await this.betRepository.save(bet);
 
     await this.pubSub.publish(PENDING_BET, {
@@ -115,10 +116,10 @@ export class BetsService {
   }
 
   isBettingComplete(bet: Bet): boolean {
-    const { membersJoined } = bet;
+    const { teams } = bet;
 
-    for (let i = 0; i < membersJoined.length; i++) {
-      if (!membersJoined[i].isBet) {
+    for (let i = 0; i < teams.length; i++) {
+      if (!teams[i].isBet) {
         return false;
       }
     }
