@@ -17,18 +17,26 @@ export enum Roles {
 }
 registerEnumType(Roles, { name: 'Roles' });
 
+@InputType('MemberType')
+@ObjectType()
+export class Member {
+  @Field((type) => Number)
+  id: number;
+
+  @Field((type) => Number)
+  team: number;
+}
+
 @InputType()
-export class CreateBetInput extends PickType(Bet, [
-  'content',
-  'totalAmount',
-  'teamOne',
-  'teamTwo',
-]) {
+export class CreateBetInput extends PickType(Bet, ['content', 'totalAmount']) {
   @Field((type) => Int)
   creatorId: number;
 
   @Field((type) => Int)
   judgeId: number;
+
+  @Field((type) => [Member])
+  members: Member[];
 }
 
 @ObjectType()
@@ -78,3 +86,12 @@ export class CancelBetInput {
 
 @ObjectType()
 export class CancelBetOutput extends CoreOutput {}
+
+@InputType()
+export class GetBetInput {
+  @Field((type) => Int)
+  betId: number;
+}
+
+@ObjectType()
+export class GetBetOutput extends CoreOutput {}

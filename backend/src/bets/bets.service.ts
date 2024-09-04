@@ -38,13 +38,25 @@ export class BetsService {
   // 내기 생성, 알림
   @TryCatch('내기 생성에 실패했습니다.')
   async createBet(authUser: User, createBetInput: CreateBetInput): Promise<CreateBetOutput> {
+    const { content, creatorId, judgeId, members, totalAmount } = createBetInput;
+
     if (authUser.id !== createBetInput.creatorId) {
       return { ok: false, error: '내기 생성자와 로그인한 유저가 다릅니다.' };
     }
-    const creator = await this.usersService.findUserById(createBetInput.creatorId);
-    const judge = await this.usersService.findUserById(createBetInput.judgeId);
+    const creator = await this.usersService.findUserById(creatorId);
+    const judge = await this.usersService.findUserById(judgeId);
+    const betUsers = await this.usersService.getBetUsersById(members);
+    if (!betUsers) {
+      return { ok: false, error: '존재하지 않는 id가 있습니다.' };
+    }
 
-    const bet = this.betRepository.create({ ...createBetInput, creator, judge });
+    const bet = this.betRepository.create({
+      creator,
+      judge,
+      membersJoined: betUsers,
+      content,
+      totalAmount,
+    });
     await this.betRepository.save(bet);
     await this.pubSub.publish(PENDING_BET, {
       pendingBet: { bet },
@@ -79,17 +91,27 @@ export class BetsService {
       return { ok: false, error: '잔액이 부족합니다.' };
     }
     const bet = await this.findBetById(betId);
-    bet.bettedMembers = [...bet.bettedMembers, authUser.id];
-
-    if (arraysAreEqual(bet.bettedMembers, bet.teamOne.concat(bet.teamTwo))) {
+    const complete = this.isBettingComplete(bet);
+    if (complete) {
       await this.pubSub.publish(BETTED, {
         bet,
       });
     }
-
     await this.betRepository.save(bet);
 
     return { ok: true };
+  }
+
+  isBettingComplete(bet: Bet): boolean {
+    const { membersJoined } = bet;
+
+    for (let i = 0; i < membersJoined.length; i++) {
+      if (!membersJoined[i].isBet) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   // 내기 취소, 알림
@@ -97,8 +119,7 @@ export class BetsService {
   async cancelBet(authUser: User, { betId }: CancelBetInput): Promise<CancelBetOutput> {
     const bet = await this.findBetById(betId);
     if (
-      bet.teamOne.includes(authUser.id) ||
-      bet.teamTwo.includes(authUser.id) ||
+      bet.membersJoined.map((user: User) => user.id).includes(authUser.id) ||
       bet.judgeId === authUser.id
     ) {
       bet.status = BetStatus.Canceled;

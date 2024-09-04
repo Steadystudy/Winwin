@@ -57,7 +57,9 @@ export class BetsResolver {
   // 생성 및 초대 알림
   @Subscription((returns) => PendingBet, {
     filter: ({ pendingBet: { bet } }, _, { user }) => {
-      return bet.teamOne.concat(bet.teamTwo).includes(user.id) || user.id == bet.judgeId;
+      return (
+        bet.membersJoined.map((user: User) => user.id).includes(user.id) || user.id == bet.judgeId
+      );
     },
     resolve: ({ pendingBet: { bet } }, _, { user }) => {
       return {
@@ -78,7 +80,7 @@ export class BetsResolver {
   // 결과 안내 알림
   @Subscription((returns) => Bet, {
     filter: ({ pendingBet: { bet } }, _, { user }) => {
-      return bet.teamOne.concat(bet.teamTwo).includes(user.id);
+      return bet.membersJoined.map((user) => user.id).includes(user.id);
     },
     resolve: ({ pendingBet: { bet } }) => {
       return bet;
@@ -91,7 +93,7 @@ export class BetsResolver {
   // 모금 완료 알림
   @Subscription((returns) => Bet, {
     filter: ({ bet }, _, { user }) => {
-      return bet.teamOne.concat(bet.teamTwo).includes(user.id) || bet.judgeId === user.id;
+      return bet.membersJoined.map((user) => user.id).includes(user.id) || bet.judgeId === user.id;
     },
     resolve: ({ bet }) => {
       return bet;
@@ -104,7 +106,7 @@ export class BetsResolver {
   // 내기 취소 알림
   @Subscription((returns) => Bet, {
     filter: ({ bet }, _, { user }) => {
-      return bet.teamOne.concat(bet.teamTwo).includes(user.id) || bet.judgeId === user.id;
+      return bet.membersJoined.map((user) => user.id).includes(user.id) || bet.judgeId === user.id;
     },
     resolve: ({ bet }) => {
       return bet;

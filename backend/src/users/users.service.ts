@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { BetUser, User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserInput, CreateUserOutput, FindUserInput, FindUserOutput } from './dtos/user.dtos';
 import { TryCatch } from 'src/decorators/TryCatch.decorator';
 import { Account } from './entities/account.entity';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/account.dto';
+import { Member } from 'src/bets/dtos/bet.dto';
 
 @Injectable()
 export class UsersService {
@@ -41,6 +42,24 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ where: { id } });
 
     return user;
+  }
+
+  async getBetUsersById(members: Member[]): Promise<BetUser[]> {
+    const betUsers = [];
+
+    for (let i = 0; i < members.length; i++) {
+      const { id, team } = members[i];
+      const user = await this.findUserById(id);
+      if (user) {
+        const betUser = { ...user, team, isBet: false };
+
+        betUsers.push(betUser);
+      } else {
+        return null;
+      }
+    }
+
+    return betUsers;
   }
 
   async getUserWithFriends(userId: number): Promise<User> {
