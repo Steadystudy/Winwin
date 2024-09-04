@@ -43,7 +43,10 @@ export class User extends CoreEntity {
   betsCreated?: Bet[];
 
   @Field((type) => [Bet], { nullable: true })
-  @Column('json', { nullable: true })
+  @OneToMany((type) => Bet, (bet) => bet.membersJoined, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
   betsJoined?: Bet[];
 
   @Field((type) => [Bet], { nullable: true })
@@ -60,4 +63,16 @@ export class User extends CoreEntity {
     nullable: true,
   })
   friends?: User[];
+}
+@Entity()
+@InputType('BetUserInput', { isAbstract: true })
+@ObjectType()
+export class BetUser extends User {
+  @Column()
+  @Field((type) => Int)
+  team: number;
+
+  @Column({ default: false })
+  @Field((type) => Boolean)
+  isBet: boolean;
 }

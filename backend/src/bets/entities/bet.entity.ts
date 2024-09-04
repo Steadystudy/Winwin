@@ -1,10 +1,9 @@
 import { Field, InputType, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { isEnum } from 'class-validator';
 import { CoreEntity } from 'src/common/entity/core.entity';
-import { User } from 'src/users/entities/user.entity';
+import { BetUser, User } from 'src/users/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
 
-type Result = 'teamOne' | 'teamTwo';
 export enum BetStatus {
   Canceled = 'Canceled',
   Betting = 'Betting',
@@ -53,19 +52,13 @@ export class Bet extends CoreEntity {
   @Field((type) => BetStatus)
   status: BetStatus;
 
-  @Field((type) => [Int])
-  @Column('json', { nullable: true })
-  bettedMembers?: number[];
-
-  @Field((type) => String)
+  @Field((type) => Number)
   @Column({ nullable: true })
-  result?: Result;
+  result?: number;
 
-  @Field((type) => [Int])
-  @Column('json', { nullable: true })
-  teamOne?: number[];
-
-  @Field((type) => [Int])
-  @Column('json', { nullable: true })
-  teamTwo?: number[];
+  @Field((type) => [BetUser])
+  @ManyToOne((type) => User, (user) => user.betsJoined, {
+    onDelete: 'CASCADE',
+  })
+  membersJoined?: BetUser[];
 }
