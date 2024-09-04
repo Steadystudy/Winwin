@@ -12,6 +12,7 @@ import {
   SendMoneyOutput,
   CancelBetInput,
   CancelBetOutput,
+  GetBetOutput,
 } from './dtos/bet.dto';
 import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
@@ -35,34 +36,45 @@ export class BetsService {
     return await this.betRepository.findOne({ where: { id } });
   }
 
+  async getBetById(betId: number): Promise<GetBetOutput> {
+    const bet = await this.betRepository.findOne({
+      where: { id: betId },
+      relations: ['membersJoined'],
+    });
+
+    return { ok: true, bet };
+  }
+
   // 내기 생성, 알림
   @TryCatch('내기 생성에 실패했습니다.')
   async createBet(authUser: User, createBetInput: CreateBetInput): Promise<CreateBetOutput> {
     const { content, creatorId, judgeId, members, totalAmount } = createBetInput;
-
-    if (authUser.id !== createBetInput.creatorId) {
+    if (authUser.id !== creatorId) {
       return { ok: false, error: '내기 생성자와 로그인한 유저가 다릅니다.' };
     }
     const creator = await this.usersService.findUserById(creatorId);
     const judge = await this.usersService.findUserById(judgeId);
     const betUsers = await this.usersService.getBetUsersById(members);
-    if (!betUsers) {
+    if (!betUsers || !judge || !creator) {
       return { ok: false, error: '존재하지 않는 id가 있습니다.' };
     }
 
-    const bet = this.betRepository.create({
+    const tempBet = this.betRepository.create({
       creator,
       judge,
-      membersJoined: betUsers,
       content,
       totalAmount,
     });
-    await this.betRepository.save(bet);
+    const bet = await this.betRepository.save(tempBet);
+
+    bet.membersJoined = betUsers;
+    const savedBet = await this.betRepository.save(bet);
+
     await this.pubSub.publish(PENDING_BET, {
       pendingBet: { bet },
     });
 
-    return { ok: true, bet };
+    return { ok: true, bet: savedBet };
   }
 
   // 심판이 내기 결과 입력, 알림

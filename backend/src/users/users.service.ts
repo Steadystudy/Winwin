@@ -103,13 +103,13 @@ export class UsersService {
     const friend = await this.getUserWithFriends(id);
 
     if (user && friend) {
-      console.log(user.friends);
       user.friends = [...(user.friends || []), friend];
       await this.usersRepository.save(user);
       friend.friends = [...(friend.friends || []), user];
       await this.usersRepository.save(friend);
+      return { ok: true, user };
+    } else {
+      return { ok: false, error: '친구 id가 존재하지 않습니다' };
     }
-
-    return { ok: true, user };
   }
 }

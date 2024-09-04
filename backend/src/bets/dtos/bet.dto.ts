@@ -94,4 +94,7 @@ export class GetBetInput {
 }
 
 @ObjectType()
-export class GetBetOutput extends CoreOutput {}
+export class GetBetOutput extends CoreOutput {
+  @Field((type) => Bet)
+  bet?: Bet;
+}

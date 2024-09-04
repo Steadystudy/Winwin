@@ -10,6 +10,8 @@ import {
   Roles,
   SendMoneyInput,
   SendMoneyOutput,
+  GetBetInput,
+  GetBetOutput,
 } from './dtos/bet.dto';
 import { AuthUser } from 'src/decorators/AuthUser.decorator';
 import { Inject } from '@nestjs/common';
@@ -28,6 +30,11 @@ export class BetsResolver {
   @Query((returns) => [Bet])
   async bets(): Promise<Bet[]> {
     return this.betsService.findAll();
+  }
+
+  @Query((returns) => GetBetOutput)
+  async getBetById(@Args('input') { betId }: GetBetInput): Promise<GetBetOutput> {
+    return await this.betsService.getBetById(betId);
   }
 
   @Mutation((returns) => SendMoneyOutput)
