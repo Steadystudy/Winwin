@@ -43,7 +43,7 @@ export class User extends CoreEntity {
   betsCreated?: Bet[];
 
   @Field((type) => [Bet], { nullable: true })
-  @OneToMany((type) => Bet, (bet) => bet.membersJoined, {
+  @ManyToMany((type) => Bet, (bet) => bet.membersJoined, {
     onDelete: 'CASCADE',
     nullable: true,
   })

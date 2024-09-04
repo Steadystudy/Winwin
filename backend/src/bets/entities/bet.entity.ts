@@ -2,7 +2,7 @@ import { Field, InputType, Int, ObjectType, registerEnumType } from '@nestjs/gra
 import { isEnum } from 'class-validator';
 import { CoreEntity } from 'src/common/entity/core.entity';
 import { BetUser, User } from 'src/users/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, RelationId } from 'typeorm';
 
 export enum BetStatus {
   Canceled = 'Canceled',
@@ -57,8 +57,14 @@ export class Bet extends CoreEntity {
   result?: number;
 
   @Field((type) => [BetUser])
-  @ManyToOne((type) => User, (user) => user.betsJoined, {
+  @ManyToMany((type) => User, (user) => user.betsJoined, {
     onDelete: 'CASCADE',
+    nullable: true,
+  })
+  @JoinTable({
+    name: 'users_bets_joined_bets',
+    joinColumn: { name: 'bets', referencedColumnName: 'id' }, // 이 테이블의 외래 키
+    inverseJoinColumn: { name: 'users', referencedColumnName: 'id' },
   })
   membersJoined?: BetUser[];
 }
