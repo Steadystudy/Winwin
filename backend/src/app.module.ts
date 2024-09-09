@@ -27,6 +27,10 @@ import { JwtModule } from '@nestjs/jwt';
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
         SECRET_KEY: Joi.string().required(),
+        JWT_ACCESSTOKEN_SECRET_KEY: Joi.string().required(),
+        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        JWT_REFRESH_TOKEN_SECRET_KEY: Joi.string().required(),
+        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -42,10 +46,10 @@ import { JwtModule } from '@nestjs/jwt';
           },
         },
       },
-      context: async ({ req, connection }) => {
+      context: ({ req, res, connection }) => {
         const TOKEN_KEY = 'x-jwt';
         if (req) {
-          return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY] };
+          return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY], res, req };
         }
       },
     }),
@@ -69,7 +73,7 @@ import { JwtModule } from '@nestjs/jwt';
       useFactory: (configService: ConfigService) => ({
         global: true,
         secret: `${configService.get('SECRET_KEY')}`,
-        signOptions: { expiresIn: '1 day' },
+        signOptions: { expiresIn: `${configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s` },
       }),
       inject: [ConfigService],
     }),

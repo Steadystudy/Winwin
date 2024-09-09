@@ -13,13 +13,18 @@ export class UserGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const token = gqlContext['token'];
+
     if (token) {
       const decoded = this.jwtService.verify(token.toString());
       if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
-        const user = await this.usersService.findUserById(decoded['id']);
+        const userId = decoded['id'];
+        const user = await this.usersService.findUserById(userId);
+        // const cookies = gqlContext.req.cookies;
+        // const refreshToken = cookies?.refreshToken;
+        // const a = await this.usersService.getUserIfRefreshTokenMatches(user, refreshToken);
+
         if (user) {
           gqlContext['user'] = user;
-
           return true;
         }
       }

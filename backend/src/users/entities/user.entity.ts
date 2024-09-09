@@ -1,18 +1,10 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Account } from 'src/users/entities/account.entity';
 import { CoreEntity } from 'src/common/entity/core.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 import { Bet } from 'src/bets/entities/bet.entity';
 import { Length } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 @Entity({
   name: 'users',
@@ -20,6 +12,10 @@ import { Length } from 'class-validator';
 @InputType('UserInputType', { isAbstract: true })
 @ObjectType()
 export class User extends CoreEntity {
+  @Column({ nullable: true })
+  @Exclude()
+  currentHashedRefreshToken?: string;
+
   @Column()
   @Field((type) => String)
   @Length(1, 8)

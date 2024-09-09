@@ -7,6 +7,7 @@ import { TryCatch } from 'src/decorators/TryCatch.decorator';
 import { Account } from './entities/account.entity';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/account.dto';
 import { Member } from 'src/bets/dtos/bet.dto';
+import { compare, hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -25,7 +26,7 @@ export class UsersService {
   async me(userId: number): Promise<User> {
     const me = await this.usersRepository.findOne({
       where: { id: userId },
-      relations: ['friends', 'betsCreated', 'betsJudged', 'account'],
+      relations: ['friends', 'betsCreated', 'betsJudged', 'account', 'betsJoined'],
     });
 
     return me;
@@ -111,5 +112,27 @@ export class UsersService {
     } else {
       return { ok: false, error: '친구 id가 존재하지 않습니다' };
     }
+  }
+
+  async setCurrentRefreshToken(id: number, refreshToken: string) {
+    const currentHashedRefreshToken = await hash(refreshToken, 10);
+    await this.usersRepository.update(id, { currentHashedRefreshToken });
+  }
+
+  @TryCatch('refreshToken이 다릅니다')
+  async getUserIfRefreshTokenMatches(authUser: User, refreshToken: string) {
+    console.log(refreshToken);
+    const isRefreshTokenMatching = await compare(refreshToken, authUser.currentHashedRefreshToken);
+
+    if (isRefreshTokenMatching) {
+      return authUser;
+    }
+  }
+
+  // 로그아웃시
+  async removeRefreshToken(id: number) {
+    return this.usersRepository.update(id, {
+      currentHashedRefreshToken: null,
+    });
   }
 }
