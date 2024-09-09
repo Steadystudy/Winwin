@@ -48,9 +48,8 @@ const client = new ApolloClient({
       },
     },
   }),
-  headers: {
-    Authorization: 'Bearer',
-  },
+  headers: {},
+  credentials: 'include',
   name: 'winwin',
 });
 

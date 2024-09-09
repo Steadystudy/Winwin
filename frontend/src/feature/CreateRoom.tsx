@@ -84,6 +84,10 @@ export default function CreateRoom() {
     reset();
   };
 
+  const handleSelect = (value: number) => {
+    setMoney(value);
+  };
+
   return (
     <>
       <NavCreate from={PAGE_URL.INVITE_JUDGE} to={PAGE_URL.ROOM_CONFIRM} onClick={onSubmit}>
@@ -113,8 +117,8 @@ export default function CreateRoom() {
             <Flex align="center" gap={4}>
               <Select
                 options={moneyOptions}
-                onChange={(e) => setMoney(e.value)}
-                defaultValue={moneyOptions[0]}
+                onChange={handleSelect}
+                defaultValue={moneyOptions[0].value}
               />
               <span>원</span>
             </Flex>

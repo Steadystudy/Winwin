@@ -48,7 +48,7 @@ export class BetsService {
   // 내기 생성, 알림
   @TryCatch('내기 생성에 실패했습니다.')
   async createBet(authUser: User, createBetInput: CreateBetInput): Promise<CreateBetOutput> {
-    const { content, creatorId, judgeId, members, totalAmount } = createBetInput;
+    const { title, content, creatorId, judgeId, members, totalAmount } = createBetInput;
     if (authUser.id !== creatorId) {
       return { ok: false, error: '내기 생성자와 로그인한 유저가 다릅니다.' };
     }
@@ -60,6 +60,7 @@ export class BetsService {
     }
 
     const tempBet = this.betRepository.create({
+      title,
       creator,
       judge,
       content,
