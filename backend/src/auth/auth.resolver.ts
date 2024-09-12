@@ -7,8 +7,8 @@ import { CoreOutput } from 'src/common/dtos/output.dto';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation((returns) => LoginOutput)
-  async login(@Args('input') loginInput: LoginInput, @Context() context): Promise<LoginOutput> {
-    return this.authService.login(loginInput, context);
-  }
+  // @Mutation((returns) => LoginOutput)
+  // async login(@Args('input') loginInput: LoginInput, @Context() context): Promise<LoginOutput> {
+  //   return this.authService.login(loginInput, context);
+  // }
 }

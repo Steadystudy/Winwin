@@ -16,12 +16,40 @@ export default function HomeHeader() {
     router.push(PAGE_URL.LOGIN);
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: me?.id,
+        }),
+        credentials: 'include', // 쿠키를 요청에 포함
+      });
+
+      if (!response.ok) {
+        throw new Error('로그인 실패');
+      }
+
+      const { ok, token, error } = await response.json();
+
+      if (ok) {
+        router.push(PAGE_URL.HOME);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="relative w-full h-25vh bg-blue200 ">
       <Flex align="center" justify="space-between" className="p-4">
         <Flex align="center" gap={8}>
           {me ? (
             <AvatarProfile
+              onClick={handleLogout}
               src={me?.profileImg}
               alt={me?.name + ' 프로필 사진'}
               vertical={false}

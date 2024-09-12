@@ -15,6 +15,7 @@ const token =
   typeof window !== 'undefined' ? window.localStorage.getItem(LOCALSTORAGE_TOKEN) : null;
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
+  credentials: 'include',
 });
 export const authTokenVar = makeVar(token);
 export const isLoggedInVar = makeVar(Boolean(token));
@@ -48,8 +49,6 @@ const client = new ApolloClient({
       },
     },
   }),
-  headers: {},
-  credentials: 'include',
   name: 'winwin',
 });
 
