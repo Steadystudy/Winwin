@@ -10,3 +10,9 @@ export class LoginOutput extends CoreOutput {
   @Field((type) => String, { nullable: true })
   token?: string;
 }
+
+@InputType()
+export class LogoutInput extends PickType(User, ['id']) {}
+
+@ObjectType()
+export class LogoutOutput extends CoreOutput {}

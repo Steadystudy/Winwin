@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BetUser, User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -121,11 +121,18 @@ export class UsersService {
 
   @TryCatch('refreshToken이 다릅니다')
   async getUserIfRefreshTokenMatches(authUser: User, refreshToken: string) {
-    console.log(refreshToken);
+    const user = await this.findUserById(authUser.id);
+
+    if (!user || !user.currentHashedRefreshToken) {
+      throw new UnauthorizedException('엑세스가 거부되었습니다.');
+    }
+
     const isRefreshTokenMatching = await compare(refreshToken, authUser.currentHashedRefreshToken);
 
     if (isRefreshTokenMatching) {
       return authUser;
+    } else {
+      throw new UnauthorizedException('Refresh Token이 사용자 것과 일치하지 않습니다.');
     }
   }
 

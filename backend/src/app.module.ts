@@ -46,11 +46,12 @@ import { JwtModule } from '@nestjs/jwt';
           },
         },
       },
-      context: ({ req, res, connection }) => {
+      context: async ({ req, res, connection }) => {
         const TOKEN_KEY = 'x-jwt';
-        if (req) {
-          return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY], res, req };
-        }
+        const cookies = req.cookies || {};
+        console.log(cookies);
+
+        return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY], res, req };
       },
     }),
 

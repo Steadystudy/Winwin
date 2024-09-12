@@ -26,8 +26,9 @@ export class AuthService {
     return {
       refreshToken,
       domain: 'localhost',
+      path: '/',
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: 'lax' as const,
       secure: process.env.NODE_ENV === 'production',
       maxAge: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')) * 1000,
     };
@@ -39,29 +40,37 @@ export class AuthService {
     return {
       accessToken,
       domain: 'localhost',
+      path: '/',
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: 'lax' as const,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) * 1000,
+      maxAge: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')) * 1000,
     };
   }
 
-  async login({ name }: LoginInput, context: any): Promise<LoginOutput> {
+  async login({ name }: LoginInput, res: Response): Promise<LoginOutput> {
     const { ok, user } = await this.usersService.findUser({ name });
     if (!ok) {
       return { ok, error: '존재하지 않는 유저입니다.' };
     }
 
-    // const { refreshToken, ...refreshOption } = await this.generateRefreshTokens(user.id);
+    const { refreshToken, ...refreshOption } = await this.generateRefreshTokens(user.id);
     const { accessToken, ...accessOption } = await this.generateAccessTokens(user.id);
 
-    // await this.usersService.setCurrentRefreshToken(user.id, refreshToken);
-    // context.res.cookie('refreshToken', refreshToken, refreshOption);
-    // context.res.cookie('Authentication', '', accessOption);
+    await this.usersService.setCurrentRefreshToken(user.id, refreshToken);
+    res.cookie('refreshToken', refreshToken, refreshOption);
+    res.cookie('accessToken', accessToken, accessOption);
 
     return {
       ok: true,
       token: accessToken,
     };
+  }
+
+  async logout({ id }, res: Response) {
+    await this.usersService.removeRefreshToken(id);
+
+    res.cookie('refreshToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 });
+    res.cookie('accessToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 });
   }
 }
