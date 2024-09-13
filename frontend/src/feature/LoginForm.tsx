@@ -60,7 +60,7 @@ export default function LoginForm() {
       const { ok, token, error } = await response.json();
 
       if (ok && token) {
-        localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+        // localStorage.setItem(LOCALSTORAGE_TOKEN, token);
         authTokenVar(token);
         isLoggedInVar(true);
 

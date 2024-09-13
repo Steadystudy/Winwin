@@ -24,7 +24,6 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      'x-jwt': authTokenVar() || '',
     },
   };
 });

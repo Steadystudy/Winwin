@@ -28,15 +28,13 @@ export default function HomeHeader() {
         }),
         credentials: 'include', // 쿠키를 요청에 포함
       });
-
       if (!response.ok) {
-        throw new Error('로그인 실패');
+        throw new Error('로그아웃 실패');
       }
 
-      const { ok, token, error } = await response.json();
-
+      const { ok, error } = await response.json();
       if (ok) {
-        router.push(PAGE_URL.HOME);
+        router.refresh();
       }
     } catch (error) {
       console.error(error);
