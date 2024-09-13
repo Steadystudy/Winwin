@@ -26,7 +26,6 @@ import { JwtModule } from '@nestjs/jwt';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
-        SECRET_KEY: Joi.string().required(),
         JWT_ACCESSTOKEN_SECRET_KEY: Joi.string().required(),
         JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
         JWT_REFRESH_TOKEN_SECRET_KEY: Joi.string().required(),
@@ -49,7 +48,6 @@ import { JwtModule } from '@nestjs/jwt';
       context: async ({ req, res, connection }) => {
         const TOKEN_KEY = 'x-jwt';
         const cookies = req.cookies || {};
-        console.log(cookies);
 
         return { token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY], res, req };
       },
@@ -73,7 +71,7 @@ import { JwtModule } from '@nestjs/jwt';
       global: true,
       useFactory: (configService: ConfigService) => ({
         global: true,
-        secret: `${configService.get('SECRET_KEY')}`,
+        secret: `${configService.get('JWT_ACCESSTOKEN_SECRET_KEY')}`,
         signOptions: { expiresIn: `${configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s` },
       }),
       inject: [ConfigService],

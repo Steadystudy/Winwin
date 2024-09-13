@@ -50,6 +50,7 @@ export class AuthService {
 
   async login({ name }: LoginInput, res: Response): Promise<LoginOutput> {
     const { ok, user } = await this.usersService.findUser({ name });
+
     if (!ok) {
       return { ok, error: '존재하지 않는 유저입니다.' };
     }
@@ -72,5 +73,9 @@ export class AuthService {
 
     res.cookie('refreshToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 });
     res.cookie('accessToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 });
+
+    return {
+      ok: true,
+    };
   }
 }
