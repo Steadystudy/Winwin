@@ -5,6 +5,7 @@ import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { User } from 'src/users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { serialize } from 'cookie';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +45,7 @@ export class AuthService {
       httpOnly: true,
       sameSite: 'lax' as const,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')) * 1000,
+      maxAge: Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) * 1000,
     };
   }
 
@@ -59,8 +60,8 @@ export class AuthService {
     const { accessToken, ...accessOption } = await this.generateAccessTokens(user.id);
 
     await this.usersService.setCurrentRefreshToken(user.id, refreshToken);
-    res.cookie('refreshToken', refreshToken, refreshOption);
-    res.cookie('accessToken', accessToken, accessOption);
+    res.setHeader('Set-Cookie', serialize('accessToken', accessToken, accessOption));
+    res.setHeader('Set-Cookie', serialize('refreshToken', refreshToken, refreshOption));
 
     return {
       ok: true,
@@ -71,8 +72,14 @@ export class AuthService {
   async logout({ id }, res: Response) {
     await this.usersService.removeRefreshToken(id);
 
-    res.cookie('refreshToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 });
-    res.cookie('accessToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 });
+    res.setHeader(
+      'Set-Cookie',
+      serialize('accessToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 }),
+    );
+    res.setHeader(
+      'Set-Cookie',
+      serialize('refreshToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 }),
+    );
 
     return {
       ok: true,

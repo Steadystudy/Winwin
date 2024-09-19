@@ -1,14 +1,20 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { LoginInput, LoginOutput } from './dtos/login.dto';
+import { LoginInput, LoginOutput, LogoutInput, LogoutOutput } from './dtos/login.dto';
 import { AuthService } from './auth.service';
-import { CoreOutput } from 'src/common/dtos/output.dto';
+import { Public } from 'src/decorators/Public.decorator';
 
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  // @Mutation((returns) => LoginOutput)
-  // async login(@Args('input') loginInput: LoginInput, @Context() context): Promise<LoginOutput> {
-  //   return this.authService.login(loginInput, context);
-  // }
+  @Public()
+  @Mutation((returns) => LoginOutput)
+  async login(@Args('input') loginInput: LoginInput, @Context() context): Promise<LoginOutput> {
+    return await this.authService.login(loginInput, context.res);
+  }
+
+  @Mutation((returns) => LogoutOutput)
+  async logout(@Args('input') logoutInput: LogoutInput, @Context() context): Promise<LoginOutput> {
+    return await this.authService.logout(logoutInput, context.res);
+  }
 }
