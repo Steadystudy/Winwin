@@ -10,6 +10,7 @@ import {
 import { LOCALSTORAGE_TOKEN } from '../constants';
 import { PropsWithChildren } from 'react';
 import { setContext } from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
 
 const token =
   typeof window !== 'undefined' ? window.localStorage.getItem(LOCALSTORAGE_TOKEN) : null;
@@ -28,8 +29,23 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      if (message === 'Unauthorized') {
+        // 사용자에게 로그아웃 처리 및 로그인 페이지로 리디렉션
+        console.log('Unauthorized! Redirecting to login...');
+        // 예: history.push('/login');
+      }
+    });
+  }
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(httpLink).concat(errorLink),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

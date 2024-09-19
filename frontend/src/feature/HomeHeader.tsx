@@ -1,5 +1,7 @@
 'use client';
 
+import { gql, useMutation } from '@apollo/client';
+import { LogoutMutation } from '__generated__/graphql';
 import { Avatar, Button, Flex } from 'antd';
 import Account from 'components/Account';
 import AvatarProfile from 'components/AvatarProfile';
@@ -7,6 +9,17 @@ import { PAGE_URL } from 'constants/url';
 import { useMe } from 'hooks/useMe';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { authTokenVar, isLoggedInVar } from 'provider/ApolloProvider';
+
+const LOGOUT_MUTATION = gql`
+  mutation logout($loginInput: LogoutInput!) {
+    logout(input: $loginInput) {
+      ok
+      error
+    }
+  }
+`;
+
 export default function HomeHeader() {
   const { me } = useMe();
   const router = useRouter();
@@ -16,28 +29,33 @@ export default function HomeHeader() {
     router.push(PAGE_URL.LOGIN);
   };
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('http://localhost:4000/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: me?.id,
-        }),
-        credentials: 'include', // 쿠키를 요청에 포함
-      });
-      if (!response.ok) {
-        throw new Error('로그아웃 실패');
-      }
+  const onCompleted = (data: LogoutMutation) => {
+    const {
+      logout: { ok, error },
+    } = data;
+    if (ok) {
+      authTokenVar('');
+      isLoggedInVar(false);
+    }
+  };
+  const [loginMuation, { loading, data: loginResult }] = useMutation<LogoutMutation>(
+    LOGOUT_MUTATION,
+    {
+      onCompleted,
+    },
+  );
 
-      const { ok, error } = await response.json();
-      if (ok) {
-        router.refresh();
-      }
-    } catch (error) {
-      console.error(error);
+  const handleLogout = async (e: any) => {
+    e.preventDefault();
+
+    if (!loading) {
+      loginMuation({
+        variables: {
+          loginInput: {
+            id: me?.id,
+          },
+        },
+      });
     }
   };
 
