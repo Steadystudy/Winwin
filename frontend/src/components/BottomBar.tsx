@@ -31,27 +31,27 @@ export default function BottomBar() {
   );
 
   return (
-    <Flex className=" fixed left-1/2 -translate-x-1/2 bottom-4 w-[90%] h-20 justify-between flex-shrink-0 rounded-3xl bg-blue100">
+    <Flex className=" fixed left-1/2 -translate-x-1/2 bottom-4 w-[90%] max-w-[512px] h-20 justify-between flex-shrink-0 rounded-3xl bg-blue100">
       <Flex justify="center" align="center" className="pl-12">
         <Image src={`/icons/store.svg`} width={40} height={40} alt="store" />
       </Flex>
-      <Flex justify="center" align="center" className="relative h-20">
-        <Flex
-          justify="center"
-          align="center"
-          className="absolute top-[-20px] w-20 h-20 rounded-full bg-green-500 hover:cursor-pointer"
-        >
+      <Popover className="bg-background" content={content} trigger={'click'}>
+        <Flex justify="center" align="center" className="relative h-20">
           <Flex
             justify="center"
             align="center"
-            className="w-16 h-16 rounded-full bg-background drop-shadow-md"
+            className="absolute top-[-20px] w-20 h-20 rounded-full bg-green-500 hover:cursor-pointer"
           >
-            <Popover className="bg-background" content={content} trigger={'click'}>
+            <Flex
+              justify="center"
+              align="center"
+              className="w-16 h-16 rounded-full bg-background drop-shadow-md"
+            >
               <Image src={'/icons/Money.svg'} width={40} height={40} alt={'bet'} />
-            </Popover>
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
+      </Popover>
       <Flex justify="center" align="center" className="pr-12">
         <Image src={`/icons/Gamepad.svg`} width={40} height={40} alt="gameEvent" />
       </Flex>
