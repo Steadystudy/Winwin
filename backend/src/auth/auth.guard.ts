@@ -28,41 +28,35 @@ export class UserGuard implements CanActivate {
     const accessToken = req.cookies?.accessToken;
     const refreshToken = req.cookies?.refreshToken;
 
+    // if (gqlContext['token']) {
+    //   accessToken = gqlContext['token'];
+    // }
+
+    // console.log('accessToken:', accessToken);
     if (!refreshToken) return false;
 
-    if (accessToken) {
-      try {
-        const decoded = this.jwtService.verify(accessToken);
+    try {
+      const decoded = this.jwtService.verify(accessToken);
 
-        if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
-          const userId = decoded['id'];
-          const user = await this.usersService.findUserById(userId);
-
-          if (user) {
-            gqlContext['user'] = user;
-            return true;
-          }
-        }
-      } catch (e) {
-        const refreshDecoded = this.jwtService.verify(refreshToken, {
-          secret: `${this.configService.get('JWT_REFRESH_TOKEN_SECRET_KEY')}`,
-        });
-        const userId = refreshDecoded['id'];
+      if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
+        const userId = decoded['id'];
         const user = await this.usersService.findUserById(userId);
-        const authUser = await this.usersService.getUserIfRefreshTokenMatches(user, refreshToken);
 
-        if (authUser) {
-          const { accessToken, ...accessOptions } = await this.authService.generateAccessTokens(
-            authUser.id,
-          );
-          res.setHeader('Set-Cookie', serialize('accessToken', accessToken, accessOptions));
-          gqlContext['user'] = authUser;
+        if (user) {
+          gqlContext['user'] = user;
           return true;
         }
+      }
+    } catch (e) {
+      const authUser = this.authService.regenerateTokenByRefresh(refreshToken, res);
+      if (!authUser) {
         return false;
       }
+      gqlContext['user'] = authUser;
+
+      return true;
     }
-    // 일시적으로 다 허용
-    return true;
+
+    return false;
   }
 }

@@ -48,6 +48,23 @@ export class AuthService {
     };
   }
 
+  async regenerateTokenByRefresh(refreshToken: string, res: Response): Promise<User | null> {
+    const refreshDecoded = this.jwtService.verify(refreshToken, {
+      secret: `${this.configService.get('JWT_REFRESH_TOKEN_SECRET_KEY')}`,
+    });
+    const userId = refreshDecoded['id'];
+    const user = await this.usersService.findUserById(userId);
+    const authUser = await this.usersService.getUserIfRefreshTokenMatches(user, refreshToken);
+
+    if (authUser) {
+      const { accessToken, ...accessOptions } = await this.generateAccessTokens(authUser.id);
+      res.setHeader('Set-Cookie', serialize('accessToken', accessToken, accessOptions));
+
+      return authUser;
+    }
+    return null;
+  }
+
   async login({ name }: LoginInput, res: Response): Promise<LoginOutput> {
     const { ok, user } = await this.usersService.findUser({ name });
 
