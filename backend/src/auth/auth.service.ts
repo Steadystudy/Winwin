@@ -37,7 +37,6 @@ export class AuthService {
 
   async generateAccessTokens(id: number) {
     const accessToken = this.jwtService.sign({ id });
-
     return {
       accessToken,
       domain: 'localhost',
@@ -72,14 +71,24 @@ export class AuthService {
   async logout({ id }, res: Response) {
     await this.usersService.removeRefreshToken(id);
 
-    res.setHeader(
-      'Set-Cookie',
-      serialize('accessToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 }),
-    );
-    res.setHeader(
-      'Set-Cookie',
-      serialize('refreshToken', '', { domain: 'localhost', path: '/', httpOnly: true, maxAge: 0 }),
-    );
+    res.setHeader('Set-Cookie', [
+      serialize('accessToken', '', {
+        domain: 'localhost',
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax' as const,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 0,
+      }),
+      serialize('refreshToken', '', {
+        domain: 'localhost',
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax' as const,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 0,
+      }),
+    ]);
 
     return {
       ok: true,

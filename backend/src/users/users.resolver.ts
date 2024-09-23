@@ -10,6 +10,7 @@ import {
   FindUserOutput,
 } from './dtos/user.dtos';
 import { AuthUser } from 'src/decorators/AuthUser.decorator';
+import { Public } from 'src/decorators/Public.decorator';
 
 @Resolver()
 export class UsersResolver {
@@ -30,6 +31,7 @@ export class UsersResolver {
     return await this.usersService.findUser(findUserInput);
   }
 
+  @Public()
   @Mutation((returns) => CreateUserOutput)
   async createUser(@Args('input') createUserInput: CreateUserInput): Promise<CreateUserOutput> {
     return await this.usersService.createUser(createUserInput);
