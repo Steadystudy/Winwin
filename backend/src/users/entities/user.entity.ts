@@ -29,7 +29,7 @@ export class User extends CoreEntity {
   @OneToOne((type) => Account, (account) => account.owner, {
     onDelete: 'CASCADE',
   })
-  account: Account;
+  account?: Account;
 
   @Field((type) => [Bet], { nullable: true })
   @OneToMany((type) => Bet, (bet) => bet.creator, {
