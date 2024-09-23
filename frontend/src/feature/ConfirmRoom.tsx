@@ -25,13 +25,17 @@ export default function ConfirmRoom() {
         <Flex vertical gap={4}>
           <h2>우리팀</h2>
           <Flex>
-            <AvatarProfile name="아무" />
+            {myTeam.map(({ id, name }) => (
+              <AvatarProfile key={id} name={name} />
+            ))}
           </Flex>
         </Flex>
         <Flex vertical gap={4}>
           <h2>상대팀</h2>
           <Flex>
-            <AvatarProfile name="노래" />
+            {opponent.map(({ id, name }) => (
+              <AvatarProfile key={id} name={name} />
+            ))}
           </Flex>
         </Flex>
         <Flex vertical gap={12}>
@@ -46,8 +50,9 @@ export default function ConfirmRoom() {
         <Flex vertical gap={4}>
           <h2>심판</h2>
           <Flex align="center" justify="center" gap={16}>
-            <AvatarProfile />
-            <span>심판 이름</span>
+            {judge.map(({ id, name }) => (
+              <AvatarProfile key={id} name={name} />
+            ))}
           </Flex>
         </Flex>
         <Button

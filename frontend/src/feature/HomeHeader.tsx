@@ -36,6 +36,8 @@ export default function HomeHeader() {
     if (ok) {
       authTokenVar('');
       isLoggedInVar(false);
+      //일단 페이지 전체 새로고침
+      window.location.reload();
     }
   };
   const [loginMuation, { loading, data: loginResult }] = useMutation<LogoutMutation>(
