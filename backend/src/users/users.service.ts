@@ -26,7 +26,19 @@ export class UsersService {
   async me(userId: number): Promise<User> {
     const me = await this.usersRepository.findOne({
       where: { id: userId },
-      relations: ['friends', 'betsCreated', 'betsJudged', 'account', 'betsJoined'],
+      relations: [
+        'friends',
+        'betsCreated',
+        'betsCreated.creator', // creator를 함께 로드
+        'betsCreated.judge',
+        'betsJudged',
+        'betsJudged.creator', // creator를 함께 로드
+        'betsJudged.judge',
+        'account',
+        'betsJoined',
+        'betsJoined.creator', // creator를 함께 로드
+        'betsJoined.judge',
+      ],
     });
 
     return me;

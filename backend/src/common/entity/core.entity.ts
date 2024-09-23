@@ -8,10 +8,10 @@ export class CoreEntity {
   id: number;
 
   @CreateDateColumn()
-  @Field((type) => Date)
-  createdAt: Date;
+  @Field((type) => Date, { nullable: true })
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  @Field((type) => Date)
-  updatedAt: Date;
+  @Field((type) => Date, { nullable: true })
+  updatedAt?: Date;
 }

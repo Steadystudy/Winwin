@@ -25,25 +25,25 @@ export class UserGuard implements CanActivate {
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const { req, res } = gqlContext;
 
-    const accessToken = req.cookies?.accessToken;
+    let accessToken = req.cookies?.accessToken;
     const refreshToken = req.cookies?.refreshToken;
 
-    // if (gqlContext['token']) {
-    //   accessToken = gqlContext['token'];
-    // }
+    // graphql playground test를 위한 x-jwt 토큰
+    if (gqlContext['token']) {
+      accessToken = gqlContext['token'];
+    }
 
-    // console.log('accessToken:', accessToken);
     if (!refreshToken) return false;
 
     try {
       const decoded = this.jwtService.verify(accessToken);
-
       if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
         const userId = decoded['id'];
         const user = await this.usersService.findUserById(userId);
 
         if (user) {
           gqlContext['user'] = user;
+
           return true;
         }
       }

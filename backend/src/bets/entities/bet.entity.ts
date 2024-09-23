@@ -56,15 +56,15 @@ export class Bet extends CoreEntity {
   @Field((type) => BetStatus)
   status: BetStatus;
 
-  @Field((type) => Number)
+  @Field((type) => Number, { nullable: true })
   @Column({ nullable: true })
   result?: number;
 
   @Field((type) => [BetUser])
-  @Column('json', { nullable: true })
+  @Column('json')
   teams: BetUser[];
 
-  @Field((type) => [User])
+  @Field((type) => [User], { nullable: true })
   @ManyToMany((type) => User, (user) => user.betsJoined, {
     onDelete: 'CASCADE',
     nullable: true,
