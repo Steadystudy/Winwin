@@ -60,9 +60,9 @@ export class Bet extends CoreEntity {
   @Column({ nullable: true })
   result?: number;
 
-  @Field((type) => [BetUser])
-  @Column('json')
-  teams: BetUser[];
+  @Field((type) => [BetUser], { nullable: true })
+  @Column('json', { nullable: true })
+  teams?: BetUser[];
 
   @Field((type) => [User], { nullable: true })
   @ManyToMany((type) => User, (user) => user.betsJoined, {

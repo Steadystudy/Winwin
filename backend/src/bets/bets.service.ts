@@ -39,7 +39,7 @@ export class BetsService {
   async getBetById(betId: number): Promise<GetBetOutput> {
     const bet = await this.betRepository.findOne({
       where: { id: betId },
-      relations: ['membersJoined'],
+      relations: ['membersJoined', 'creator', 'judge'],
     });
 
     return { ok: true, bet };

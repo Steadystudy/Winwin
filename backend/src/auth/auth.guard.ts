@@ -17,23 +17,21 @@ export class UserGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext) {
-    const isPublic = this.reflector.get<boolean>('isPublic', context.getHandler());
+    const isPublic = this.reflector.get<boolean>('isPublic', context?.getHandler());
     if (isPublic) {
       return true;
     }
 
     const gqlContext = GqlExecutionContext.create(context).getContext();
-    const { req, res } = gqlContext;
+    const { res, cookies } = gqlContext;
 
-    let accessToken = req.cookies?.accessToken;
-    const refreshToken = req.cookies?.refreshToken;
+    let accessToken = cookies?.accessToken;
+    const refreshToken = cookies?.refreshToken;
 
     // graphql playground test를 위한 x-jwt 토큰
     if (gqlContext['token']) {
       accessToken = gqlContext['token'];
     }
-
-    if (!refreshToken) return false;
 
     try {
       const decoded = this.jwtService.verify(accessToken);
@@ -48,6 +46,7 @@ export class UserGuard implements CanActivate {
         }
       }
     } catch (e) {
+      if (!refreshToken && !res) return false;
       const authUser = this.authService.regenerateTokenByRefresh(refreshToken, res);
       if (!authUser) {
         return false;
