@@ -6,20 +6,39 @@ import {
   createHttpLink,
   InMemoryCache,
   makeVar,
+  split,
 } from '@apollo/client';
 import { LOCALSTORAGE_TOKEN } from '../constants';
 import { PropsWithChildren } from 'react';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 
-const token =
-  typeof window !== 'undefined' ? window.localStorage.getItem(LOCALSTORAGE_TOKEN) : null;
+const cookies: any = {};
+
+typeof window !== 'undefined' &&
+  document.cookie.split(';').forEach((a) => {
+    const token = a.trim().split('=');
+    cookies[token[0]] = token[1];
+  });
+
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
   credentials: 'include',
 });
-export const authTokenVar = makeVar(token);
-export const isLoggedInVar = makeVar(Boolean(token));
+
+export const isLoggedInVar = makeVar(Boolean(cookies));
+
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:4000/graphql',
+    connectionParams: {
+      cookies,
+    },
+  }),
+);
 
 const authLink = setContext((_, { headers }) => {
   return {
@@ -44,8 +63,17 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+  },
+  wsLink,
+  authLink.concat(httpLink).concat(errorLink),
+);
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink).concat(errorLink),
+  link: splitLink,
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
@@ -53,11 +81,6 @@ const client = new ApolloClient({
           isLoggedIn: {
             read() {
               return isLoggedInVar();
-            },
-          },
-          token: {
-            read() {
-              return authTokenVar();
             },
           },
         },
