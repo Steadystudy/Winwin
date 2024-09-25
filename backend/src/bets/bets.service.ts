@@ -87,6 +87,7 @@ export class BetsService {
       return { ok: false, error: '내기 심판 권한이 없습니다.' };
     }
     const bet = await this.findBetById(betId);
+    bet.status = BetStatus.Done;
     bet.result = result;
     await this.betRepository.save(bet);
     await this.pubSub.publish(BET_RESULT, {

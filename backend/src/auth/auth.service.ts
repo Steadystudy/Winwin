@@ -76,8 +76,10 @@ export class AuthService {
     const { accessToken, ...accessOption } = await this.generateAccessTokens(user.id);
 
     await this.usersService.setCurrentRefreshToken(user.id, refreshToken);
-    res.setHeader('Set-Cookie', serialize('accessToken', accessToken, accessOption));
-    res.setHeader('Set-Cookie', serialize('refreshToken', refreshToken, refreshOption));
+    res.setHeader('Set-Cookie', [
+      serialize('accessToken', accessToken, accessOption),
+      serialize('refreshToken', refreshToken, refreshOption),
+    ]);
 
     return {
       ok: true,

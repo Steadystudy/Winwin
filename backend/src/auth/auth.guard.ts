@@ -5,7 +5,6 @@ import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-import { serialize } from 'cookie';
 @Injectable()
 export class UserGuard implements CanActivate {
   constructor(
@@ -46,7 +45,7 @@ export class UserGuard implements CanActivate {
         }
       }
     } catch (e) {
-      if (!refreshToken && !res) return false;
+      if (!refreshToken || !res) return false;
       const authUser = this.authService.regenerateTokenByRefresh(refreshToken, res);
       if (!authUser) {
         return false;
