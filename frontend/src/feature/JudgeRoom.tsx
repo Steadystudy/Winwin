@@ -1,19 +1,55 @@
 'use client';
 
+import { gql, useMutation } from '@apollo/client';
+import { JudgeBetInput } from '__generated__/graphql';
 import { Flex, Modal } from 'antd';
 import AvatarRow from 'components/AvatarRow';
 import NavJudge from 'components/NavJudge';
+import { useBetRoom } from 'hooks/useBetRoom';
 import React, { useRef, useState } from 'react';
 
-export default function JudgeRoom() {
+const JUDGE_MUTATION = gql`
+  mutation judge($judgeBetInput: JudgeBetInput!) {
+    judgeBet(input: $judgeBetInput) {
+      ok
+    }
+  }
+`;
+
+export default function JudgeRoom({ betId }: { betId: number }) {
+  const {
+    bet: { team1: teamOne, team2: teamTwo, title, judge },
+  } = useBetRoom({ betId });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   //FIXME - 여러 팀일 경우 index로 checked하고 값받아오기
-  // const [checkedIndex, setCheckedIndex] = useState<number | null>(null);
+  const [checkedIndex, setCheckedIndex] = useState<number | null>(null);
+  const onCompleted = (data: any) => {
+    const {
+      judgeBet: { ok, error },
+    } = data;
+    if (ok) {
+      console.log('judge 성공');
+    } else {
+      console.log(error);
+    }
+  };
 
-  // const handleCheckboxChange = (index:number) => {
-  //   setCheckedIndex(index)
-  // }
+  const [judgeMutation, { data, loading }] = useMutation(JUDGE_MUTATION, {
+    variables: {
+      judgeBetInput: {
+        betId,
+        result: checkedIndex,
+        judgeId: judge?.id,
+      },
+    },
+    onCompleted,
+  });
+
+  const handleCheckboxChange = (index: number) => {
+    checkedIndex !== index ? setCheckedIndex(index) : setCheckedIndex(null);
+  };
 
   const team1 = useRef<HTMLInputElement>(null);
   const team2 = useRef<HTMLInputElement>(null);
@@ -24,6 +60,7 @@ export default function JudgeRoom() {
 
   const handleOk = () => {
     setConfirmLoading(true);
+    judgeMutation();
     setTimeout(() => {
       setIsModalOpen(false);
       setConfirmLoading(false);
@@ -50,10 +87,12 @@ export default function JudgeRoom() {
     <>
       <NavJudge
         onClick={() => {
-          showModal();
+          if (checkedIndex) {
+            showModal();
+          }
         }}
       >
-        타이틀
+        {title}
       </NavJudge>
       <Modal
         title="결과 입력"
@@ -62,13 +101,16 @@ export default function JudgeRoom() {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <p>누구누구 팀 승리로 선택하시겠습니까?</p>
+        <p>
+          {checkedIndex && checkedIndex === 1 ? teamOne[0]?.name : teamTwo[0]?.name} 팀 승리로
+          선택하시겠습니까?
+        </p>
       </Modal>
       <Flex vertical className="p-8">
         <Flex vertical>
           <Flex justify="space-between" align="center" className="">
             <label htmlFor={`team1`}>
-              <p>김아무개 Team</p>
+              <p>{teamOne[0]?.name} Team</p>
             </label>
             <input
               id={`team1`}
@@ -76,19 +118,20 @@ export default function JudgeRoom() {
               type="checkbox"
               onChange={(e) => {
                 checkTeam1();
+                handleCheckboxChange(1);
               }}
               className="w-6 h-6 border-gray-300 rounded-full"
             />
           </Flex>
           <Flex vertical className="max-h-40 overflow-y-auto">
-            <AvatarRow name="아무개" />
-            <AvatarRow name="아무개" />
+            {teamOne &&
+              teamOne.map(({ id, name }) => <AvatarRow size="small" name={name} key={id} />)}
           </Flex>
         </Flex>
         <Flex vertical>
           <Flex justify="space-between" align="center" className="">
             <label htmlFor={`team2`}>
-              <p>이아무개 Team</p>
+              <p>{teamTwo[0]?.name} Team</p>
             </label>
             <input
               id={`team2`}
@@ -96,13 +139,14 @@ export default function JudgeRoom() {
               type="checkbox"
               onChange={(e) => {
                 checkTeam2();
+                handleCheckboxChange(2);
               }}
               className="w-6 h-6 border-gray-300 rounded-full"
             />
           </Flex>
           <Flex vertical className="max-h-40 overflow-y-auto">
-            <AvatarRow name="아무개" />
-            <AvatarRow name="아무개" />
+            {teamTwo &&
+              teamTwo.map(({ id, name }) => <AvatarRow size="small" name={name} key={id} />)}
           </Flex>
         </Flex>
       </Flex>
