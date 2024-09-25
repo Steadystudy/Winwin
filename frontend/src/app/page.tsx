@@ -1,20 +1,27 @@
-import { Avatar, Button, Flex } from 'antd';
-import Account from 'components/Account';
-import BetCard from 'components/BetCard';
+'use client';
+
+import { BetStatus } from '__generated__/graphql';
+import { Divider } from 'antd';
 import BottomBar from 'components/BottomBar';
 import CardCarousel from 'components/CardCarousel';
 import HomeHeader from 'feature/HomeHeader';
-import Image from 'next/image';
+import { useMe } from 'hooks/useMe';
 
 export default function Homepage() {
+  const { me } = useMe();
+  const judgeBets = me?.betsJudged || [];
+  const endedBets = me?.betsJoined?.filter((bet) => bet.status === BetStatus.Done) || [];
+  const bettingBets = me?.betsJoined?.filter((bet) => bet.status === BetStatus.Betting) || [];
+  const bettedBets = me?.betsJoined?.filter((bet) => bet.status === BetStatus.Betted) || [];
+
   return (
     <div>
-      <HomeHeader />
-      <Flex justify="space-between" align="center" className="mt-20 px-4">
-        <h2 className="text-2xl font-bold">진행중인 내기 (2)</h2>
-        <span>더보기</span>
-      </Flex>
-      <CardCarousel />
+      <HomeHeader me={me} />
+      {bettingBets.length > 0 && <CardCarousel title="입금 대기 내기" betsArray={bettingBets} />}
+      {bettedBets.length > 0 && <CardCarousel title="심판 대기 내기" betsArray={bettedBets} />}
+      {judgeBets.length > 0 && <CardCarousel title="심판 할 내기" judge betsArray={judgeBets} />}
+      {endedBets.length > 0 && <CardCarousel title="끝난 내기" betsArray={endedBets} />}
+      <Divider />
       <BottomBar />
     </div>
   );
