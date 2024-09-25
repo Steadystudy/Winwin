@@ -1,7 +1,7 @@
 'use client';
 
-import { gql, useMutation } from '@apollo/client';
-import { LogoutMutation } from '__generated__/graphql';
+import { gql, useMutation, useSubscription } from '@apollo/client';
+import { LogoutMutation, User } from '__generated__/graphql';
 import { Avatar, Button, Flex } from 'antd';
 import Account from 'components/Account';
 import AvatarProfile from 'components/AvatarProfile';
@@ -9,7 +9,8 @@ import { PAGE_URL } from 'constants/url';
 import { useMe } from 'hooks/useMe';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { authTokenVar, isLoggedInVar } from 'provider/ApolloProvider';
+import { isLoggedInVar } from 'provider/ApolloProvider';
+import { useState } from 'react';
 
 const LOGOUT_MUTATION = gql`
   mutation logout($loginInput: LogoutInput!) {
@@ -20,12 +21,34 @@ const LOGOUT_MUTATION = gql`
   }
 `;
 
-export default function HomeHeader() {
-  const { me } = useMe();
+const PENDING_BET_SUBSCRIPTION = gql`
+  subscription OnPendingBet {
+    pendingBet {
+      bet {
+        id
+      }
+    }
+  }
+`;
+
+interface HomeHeaderProps {
+  me: User | undefined;
+}
+
+export default function HomeHeader({ me }: HomeHeaderProps) {
   const router = useRouter();
+  const [subData, setSubData] = useState();
+
+  useSubscription(PENDING_BET_SUBSCRIPTION, {
+    skip: !me,
+    onData: ({ data: { data } }) => {
+      if (data) {
+        setSubData(data);
+      }
+    },
+  });
 
   const handleLoginRedirect = () => {
-    console.log('클릭');
     router.push(PAGE_URL.LOGIN);
   };
 
@@ -33,8 +56,8 @@ export default function HomeHeader() {
     const {
       logout: { ok, error },
     } = data;
+
     if (ok) {
-      authTokenVar('');
       isLoggedInVar(false);
       //일단 페이지 전체 새로고침
       window.location.reload();
@@ -62,7 +85,7 @@ export default function HomeHeader() {
   };
 
   return (
-    <div className="relative w-full h-25vh bg-blue200 ">
+    <div className="relative w-full h-25vh bg-blue200 mb-20">
       <Flex align="center" justify="space-between" className="p-4">
         <Flex align="center" gap={8}>
           {me ? (
