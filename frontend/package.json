@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
-    "@apollo/client": "^3.11.0-rc.2",
+    "@apollo/client": "^3.11.8",
     "@parcel/watcher": "^2.4.1",
     "antd": "^5.19.4",
     "graphql": "^16.9.0",
