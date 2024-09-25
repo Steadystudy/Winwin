@@ -41,6 +41,29 @@ const ME_QUERY = gql`
           profileImg
         }
       }
+      betsJudged {
+        id
+        judge {
+          id
+          name
+        }
+        creator {
+          id
+          name
+        }
+        status
+        title
+        totalAmount
+        content
+        DepositComplete
+        teams {
+          id
+          team
+          isBet
+          name
+          profileImg
+        }
+      }
       friends {
         id
         createdAt
@@ -54,5 +77,6 @@ const ME_QUERY = gql`
 
 export const useMe = () => {
   const { data, loading, error } = useQuery<MeQuery>(ME_QUERY);
+
   return { me: data?.me, loading, error };
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { gql, useMutation } from '@apollo/client';
-import { authTokenVar, isLoggedInVar } from 'provider/ApolloProvider';
+import { isLoggedInVar } from 'provider/ApolloProvider';
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PAGE_URL } from 'constants/url';
@@ -26,10 +26,8 @@ export default function LoginForm() {
       login: { ok, token, error },
     } = data;
     if (ok && token) {
-      console.log('로그인 성공');
-      // localStorage.setItem(LOCALSTORAGE_TOKEN, token);
-      authTokenVar(token);
       isLoggedInVar(true);
+      router.push(PAGE_URL.HOME);
     }
   };
   const [loginMuation, { loading, data: loginResult }] = useMutation<LoginMutation>(
@@ -51,7 +49,6 @@ export default function LoginForm() {
         },
       });
     }
-    router.push(PAGE_URL.HOME);
   };
 
   return (

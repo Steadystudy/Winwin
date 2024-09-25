@@ -4,21 +4,26 @@ import { Flex } from 'antd';
 import AvatarProfile from './AvatarProfile';
 import { User } from 'types';
 import { Bet } from '__generated__/graphql';
+import { useMe } from 'hooks/useMe';
 
 interface BetCardProps {
   bet: Bet;
+  onClick: () => void;
 }
 
-export default function BetCard({ bet }: BetCardProps) {
-  const { title, teams, totalAmount, status, result } = bet;
-  const team1 = teams.filter((team) => team.team === 1);
-  const team2 = teams.filter((team) => team.team === 2);
+export default function BetCard({ bet, onClick }: BetCardProps) {
+  const { me } = useMe();
+
+  const { title, teams, totalAmount, status, result, judge } = bet;
+  const team1 = teams?.filter((team) => team.team === 1) || [];
+  const team2 = teams?.filter((team) => team.team === 2) || [];
 
   return (
     <Flex
+      onClick={onClick}
       justify="center"
       align="center"
-      className="w-full h-36 bg-blue300 border border-blue100"
+      className={`w-full h-36 ${me?.id === judge.id ? 'bg-red-300' : 'bg-blue300 border-blue100'} border  cursor-pointer`}
       wrap
     >
       <Flex align="center" className="w-1/3 pl-2">
