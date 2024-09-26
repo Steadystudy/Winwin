@@ -2,8 +2,7 @@
 
 import { Flex } from 'antd';
 import AvatarProfile from './AvatarProfile';
-import { User } from 'types';
-import { Bet } from '__generated__/graphql';
+import { Bet, BetStatus } from '__generated__/graphql';
 import { useMe } from 'hooks/useMe';
 
 interface BetCardProps {
@@ -18,12 +17,30 @@ export default function BetCard({ bet, onClick }: BetCardProps) {
   const team1 = teams?.filter((team) => team.team === 1) || [];
   const team2 = teams?.filter((team) => team.team === 2) || [];
 
+  let cardColor;
+  switch (status) {
+    case BetStatus.Betting:
+      cardColor = 'bg-green-500 shine';
+      break;
+    case BetStatus.Betted:
+      cardColor = 'bg-gradient-to-r from-yellow-300 to-yellow-500 shine';
+      break;
+    case BetStatus.Canceled:
+      cardColor = 'bg-red-500';
+      break;
+    case BetStatus.Done:
+      cardColor = 'bg-blue300';
+      break;
+    default:
+      cardColor = 'bg-black';
+  }
+
   return (
     <Flex
       onClick={onClick}
       justify="center"
       align="center"
-      className={`w-full h-36 ${me?.id === judge.id ? 'bg-red-300' : 'bg-blue300 border-blue100'} border  cursor-pointer`}
+      className={`w-full h-36 ${cardColor} border  cursor-pointer`}
       wrap
     >
       <Flex align="center" className="w-1/3 pl-2">
