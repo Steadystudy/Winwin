@@ -25,7 +25,7 @@ export class User extends CoreEntity {
   @Field((type) => String, { nullable: true })
   profileImg?: string;
 
-  @Field((type) => [Account], { nullable: true })
+  @Field((type) => Account, { nullable: true })
   @OneToOne((type) => Account, (account) => account.owner, {
     onDelete: 'CASCADE',
   })

@@ -35,6 +35,7 @@ export class UsersService {
         'betsJudged.creator', // creator를 함께 로드
         'betsJudged.judge',
         'account',
+        'account.owner',
         'betsJoined',
         'betsJoined.creator', // creator를 함께 로드
         'betsJoined.judge',
@@ -55,6 +56,12 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ where: { id } });
 
     return user;
+  }
+
+  async getAccountById(accountId: number) {
+    const account = await this.accountRepository.findOne({ where: { id: accountId } });
+
+    return account;
   }
 
   async getBetUsersById(members: Member[]): Promise<BetUser[]> {
@@ -105,7 +112,7 @@ export class UsersService {
     account.accountNo = String(Number(this.bankCode) + this.recentAccountNo);
 
     const savedAccount = await this.accountRepository.save(account);
-    this.recentAccountNo += Math.floor(Math.random() * 10);
+    this.recentAccountNo += 1;
 
     return { ok: true, account: savedAccount };
   }
