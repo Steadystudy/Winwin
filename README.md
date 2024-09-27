@@ -34,6 +34,22 @@
 
 2. 사용자 측면: 사용자들이 건강한 방식으로 내기를 즐길 수 있음. 법적으로 안전한 내기 환경을 제공하기 때문에 사용자들에게 안심하고 사용할 수 있는 플랫폼이 됨. 직관적인 UI/UX로 다양한 연령대 사용자들이 쉽게 접근할 수 있고 내기 생성부터 결과까지 과정을 쉽게 이해하게 함
 
+### 진행상황 (2024.09.27)
+
+내기 생성 과정  
+![상대팀](https://github.com/user-attachments/assets/fb4c1f52-9530-4c93-bd0b-cbd330d0bbba)
+![심판](https://github.com/user-attachments/assets/e5997649-95fc-469a-ae1a-23952a799c42)
+![방생성](https://github.com/user-attachments/assets/88d422d5-ebc2-46e3-8895-e285e2ec8a3e)  
+홈 화면  
+![홈화면](https://github.com/user-attachments/assets/3f5198bf-568d-41e1-8387-c66f838a89b4)  
+심판 화면  
+![심판 화면](https://github.com/user-attachments/assets/7c617fc7-e0a1-4bed-bcbb-cf44455f979c)
+![심판하기](https://github.com/user-attachments/assets/a510c750-2a2f-4007-9ccb-16af45a1439b)
+![심판 확인](https://github.com/user-attachments/assets/2dd58e13-c6ac-416c-940d-05984e834f95)
+결과 화면  
+![끝난 내기](https://github.com/user-attachments/assets/b3aeeb08-f80d-4fa2-abf9-37c8ebd95b93)
+![결과 화면](https://github.com/user-attachments/assets/a25c2958-5186-4ebf-b16b-51fffd522f57)
+
 ### 배포페이지
 
 [Storybook 배포페이지](https://651fd2521967afdc6589d5eb-rxdjcjxrjb.chromatic.com/?path=/)
