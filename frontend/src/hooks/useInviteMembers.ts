@@ -1,6 +1,6 @@
 import { User } from '__generated__/graphql';
 import { useRoomStore } from 'store/useRoomStore';
-import { InviteTypes } from 'types';
+import { InviteTypes } from 'types/';
 
 export const useInviteMembers = (
   invite: InviteTypes,

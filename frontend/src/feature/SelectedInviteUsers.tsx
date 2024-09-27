@@ -2,8 +2,9 @@
 
 import { Flex } from 'antd';
 import AvatarProfile from '../components/AvatarProfile';
-import { InviteTypes, User } from 'types';
 import { useInviteMembers } from 'hooks/useInviteMembers';
+import { InviteTypes } from 'types';
+import { User } from '__generated__/graphql';
 
 interface SelectedInviteUsersProps {
   invite: InviteTypes;

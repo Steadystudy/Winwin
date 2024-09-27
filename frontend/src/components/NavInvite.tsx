@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import LinkButton from './LinkButton';
 import { useInviteMembers } from 'hooks/useInviteMembers';
-import { InviteTypes } from 'types';
+import { InviteTypes } from 'types/';
 
 interface NavInviteProps {
   from?: string;

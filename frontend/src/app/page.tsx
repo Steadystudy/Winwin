@@ -1,7 +1,6 @@
 'use client';
 
 import { BetStatus } from '__generated__/graphql';
-import { Divider } from 'antd';
 import BottomBar from 'components/BottomBar';
 import CardCarousel from 'components/CardCarousel';
 import HomeHeader from 'feature/HomeHeader';

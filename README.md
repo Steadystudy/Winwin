@@ -45,7 +45,7 @@
 심판 화면  
 ![심판 화면](https://github.com/user-attachments/assets/7c617fc7-e0a1-4bed-bcbb-cf44455f979c)
 ![심판하기](https://github.com/user-attachments/assets/a510c750-2a2f-4007-9ccb-16af45a1439b)
-![심판 확인](https://github.com/user-attachments/assets/2dd58e13-c6ac-416c-940d-05984e834f95)
+![심판 확인](https://github.com/user-attachments/assets/2dd58e13-c6ac-416c-940d-05984e834f95)  
 결과 화면  
 ![끝난 내기](https://github.com/user-attachments/assets/b3aeeb08-f80d-4fa2-abf9-37c8ebd95b93)
 ![결과 화면](https://github.com/user-attachments/assets/a25c2958-5186-4ebf-b16b-51fffd522f57)
