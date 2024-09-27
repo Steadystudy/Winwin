@@ -13,6 +13,7 @@ h2 {
 }
 
 .slick-list {
+  width: 100%;
   border-radius: 12px;
 }
 

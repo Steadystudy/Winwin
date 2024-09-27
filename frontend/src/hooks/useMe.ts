@@ -64,6 +64,21 @@ const ME_QUERY = gql`
           profileImg
         }
       }
+      account {
+        id
+        bankCode
+        bankName
+        expiredAt
+        dailyTransferLimit
+        oneTimeTransferLimit
+        isPrimary
+        accountNo
+        accountBalance
+        owner {
+          id
+          name
+        }
+      }
       friends {
         id
         createdAt
