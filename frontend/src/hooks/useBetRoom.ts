@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { BetQuery, GetBetInput } from '__generated__/graphql';
+import { Bet, BetQuery, BetUser, GetBetInput } from '__generated__/graphql';
 
 const BET_QUERY = gql`
   query Bet($getBetInput: GetBetInput!) {
@@ -40,6 +40,8 @@ const BET_QUERY = gql`
     }
   }
 `;
+
+export type BetInfo = Partial<Bet> & { team1: BetUser[]; team2: BetUser[] };
 
 export const useBetRoom = ({ betId }: GetBetInput) => {
   const { data, error } = useQuery<BetQuery>(BET_QUERY, {

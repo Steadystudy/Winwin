@@ -21,7 +21,6 @@ export default function Homepage() {
       {bettedBets.length > 0 && <CardCarousel title="심판 대기 내기" betsArray={bettedBets} />}
       {judgeBets.length > 0 && <CardCarousel title="심판 할 내기" judge betsArray={judgeBets} />}
       {endedBets.length > 0 && <CardCarousel title="끝난 내기" betsArray={endedBets} />}
-      <Divider />
       <BottomBar />
     </div>
   );

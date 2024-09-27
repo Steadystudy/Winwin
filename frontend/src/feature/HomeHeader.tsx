@@ -32,7 +32,7 @@ const PENDING_BET_SUBSCRIPTION = gql`
 `;
 
 interface HomeHeaderProps {
-  me: User | undefined;
+  me: Partial<User> | undefined;
 }
 
 export default function HomeHeader({ me }: HomeHeaderProps) {
@@ -110,7 +110,7 @@ export default function HomeHeader({ me }: HomeHeaderProps) {
         </button>
       </Flex>
       <Flex className="absolute bottom-[-60px] left-1/2 -translate-x-1/2">
-        <Account />
+        {me?.account && <Account info={me?.account} />}
       </Flex>
     </div>
   );

@@ -8,7 +8,7 @@ interface RoomResultProps {
 }
 
 export default function RoomResult({ bet }: RoomResultProps) {
-  const { title, team1, team2, result, judge } = bet;
+  const { title, team1, team2, result, judge, totalAmount } = bet;
   const winner = result === 1 ? team1 : team2;
 
   return (
@@ -57,7 +57,7 @@ export default function RoomResult({ bet }: RoomResultProps) {
           <h2>상금</h2>
           <Flex align="center" justify="center">
             <span>{winner[0]?.name}팀 인당</span>
-            <h2>100,000원</h2>
+            <h2>{totalAmount}원</h2>
           </Flex>
         </Flex>
         <Flex vertical gap={8}>
