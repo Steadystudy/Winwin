@@ -1,6 +1,7 @@
 'use client';
 
 import { BetStatus } from '__generated__/graphql';
+import RoomBetting from 'feature/RoomBetting';
 import RoomProgress from 'feature/RoomProgress';
 import RoomResult from 'feature/RoomResult';
 import { useBetRoom } from 'hooks/useBetRoom';
@@ -11,5 +12,15 @@ export default function RoomPage({ params }: { params: Params }) {
   const { bet } = useBetRoom({ betId: id });
   const progress = bet?.status;
 
-  return <>{progress === BetStatus.Done ? <RoomResult bet={bet} /> : <RoomProgress bet={bet} />}</>;
+  return (
+    <>
+      {progress === BetStatus.Done ? (
+        <RoomResult bet={bet} />
+      ) : progress === BetStatus.Betting ? (
+        <RoomBetting betInfo={bet} />
+      ) : (
+        <RoomProgress bet={bet} />
+      )}
+    </>
+  );
 }
