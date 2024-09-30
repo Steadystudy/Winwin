@@ -2,7 +2,6 @@
 
 import { Carousel, Flex } from 'antd';
 import BetCard from './BetCard';
-import { useMe } from 'hooks/useMe';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PAGE_URL } from 'constants/url';

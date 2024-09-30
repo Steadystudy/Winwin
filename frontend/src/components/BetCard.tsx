@@ -3,16 +3,14 @@
 import { Flex } from 'antd';
 import AvatarProfile from './AvatarProfile';
 import { Bet, BetStatus } from '__generated__/graphql';
-import { useMe } from 'hooks/useMe';
+import { memo } from 'react';
 
 interface BetCardProps {
   bet: Bet;
   onClick: () => void;
 }
 
-export default function BetCard({ bet, onClick }: BetCardProps) {
-  const { me } = useMe();
-
+const BetCard = ({ bet, onClick }: BetCardProps) => {
   const { title, teams, totalAmount, status, result, judge } = bet;
   const team1 = teams?.filter((team) => team.team === 1) || [];
   const team2 = teams?.filter((team) => team.team === 2) || [];
@@ -59,4 +57,6 @@ export default function BetCard({ bet, onClick }: BetCardProps) {
       </Flex>
     </Flex>
   );
-}
+};
+
+export default memo(BetCard);

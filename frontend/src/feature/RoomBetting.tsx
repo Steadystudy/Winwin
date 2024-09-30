@@ -1,12 +1,10 @@
 'use client';
 
-import { Bet } from '__generated__/graphql';
 import { Button, Flex } from 'antd';
 import AvatarProfile from 'components/AvatarProfile';
 import NavConfirm from 'components/NavConfirm';
 import { PAGE_URL } from 'constants/url';
 import { BetInfo } from 'hooks/useBetRoom';
-import { useRoomStore } from 'store/useRoomStore';
 
 interface RoomBettingProps {
   betInfo: BetInfo;

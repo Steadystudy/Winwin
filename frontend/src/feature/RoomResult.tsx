@@ -1,14 +1,14 @@
-import { Bet, BetUser } from '__generated__/graphql';
 import { Badge, Flex, Image } from 'antd';
 import AvatarRow from 'components/AvatarRow';
 import NavRoom from 'components/NavRoom';
+import { BetInfo } from 'hooks/useBetRoom';
 
 interface RoomResultProps {
-  bet: Partial<Bet> & { team1: BetUser[]; team2: BetUser[] };
+  betInfo: BetInfo;
 }
 
-export default function RoomResult({ bet }: RoomResultProps) {
-  const { title, team1, team2, result, judge, totalAmount } = bet;
+export default function RoomResult({ betInfo }: RoomResultProps) {
+  const { title, team1, team2, result, judge, totalAmount } = betInfo;
   const winner = result === 1 ? team1 : team2;
 
   return (

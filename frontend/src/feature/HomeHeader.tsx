@@ -6,11 +6,10 @@ import { Avatar, Button, Flex } from 'antd';
 import Account from 'components/Account';
 import AvatarProfile from 'components/AvatarProfile';
 import { PAGE_URL } from 'constants/url';
-import { useMe } from 'hooks/useMe';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { isLoggedInVar } from 'provider/ApolloProvider';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 const LOGOUT_MUTATION = gql`
   mutation logout($loginInput: LogoutInput!) {
@@ -35,7 +34,7 @@ interface HomeHeaderProps {
   me: Partial<User> | undefined;
 }
 
-export default function HomeHeader({ me }: HomeHeaderProps) {
+const HomeHeader = ({ me }: HomeHeaderProps) => {
   const router = useRouter();
   const [subData, setSubData] = useState();
 
@@ -114,4 +113,6 @@ export default function HomeHeader({ me }: HomeHeaderProps) {
       </Flex>
     </div>
   );
-}
+};
+
+export default memo(HomeHeader);

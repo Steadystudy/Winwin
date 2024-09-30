@@ -15,11 +15,11 @@ export default function RoomPage({ params }: { params: Params }) {
   return (
     <>
       {progress === BetStatus.Done ? (
-        <RoomResult bet={bet} />
+        <RoomResult betInfo={bet} />
       ) : progress === BetStatus.Betting ? (
         <RoomBetting betInfo={bet} />
       ) : (
-        <RoomProgress bet={bet} />
+        <RoomProgress betInfo={bet} />
       )}
     </>
   );

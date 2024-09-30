@@ -1,19 +1,17 @@
 'use client';
 
-import { Bet, BetUser, User } from '__generated__/graphql';
 import { Button, Flex } from 'antd';
-import AvatarProfile from 'components/AvatarProfile';
 import AvatarRow from 'components/AvatarRow';
 import NavRoom from 'components/NavRoom';
-import { useBetRoom } from 'hooks/useBetRoom';
+import { BetInfo } from 'hooks/useBetRoom';
 import Image from 'next/image';
 
 interface RoomProgressProps {
-  bet: Partial<Bet> & { team1: BetUser[]; team2: BetUser[] };
+  betInfo: BetInfo;
 }
 
-export default function RoomProgress({ bet }: RoomProgressProps) {
-  const { team1, team2, judge, title, totalAmount, id } = bet;
+export default function RoomProgress({ betInfo }: RoomProgressProps) {
+  const { team1, team2, judge, title, totalAmount, id } = betInfo;
 
   return (
     <>
