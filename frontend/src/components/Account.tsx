@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Flex } from 'antd';
 import { Account as AccountType } from '__generated__/graphql';
+import { priceToString } from 'hooks/priceFormat';
 
 interface AccountProps {
   info: Partial<AccountType>;
@@ -20,7 +21,9 @@ export default function Account({ info }: AccountProps) {
       <Flex className="flex-col justify-center items-center my-2">
         <span>{owner?.name}님의 계좌</span>
         <div>
-          <span className="text-3xl font-bold">{accountBalance}</span>
+          <span className="text-3xl font-bold">
+            {accountBalance && priceToString(accountBalance)}
+          </span>
           <span>원</span>
         </div>
       </Flex>
