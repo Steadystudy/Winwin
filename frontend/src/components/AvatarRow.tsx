@@ -1,5 +1,3 @@
-'use client';
-
 import { Flex, Typography } from 'antd';
 import AvatarProfile, { AvatarProps, AvatarSize } from './AvatarProfile';
 

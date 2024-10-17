@@ -7,6 +7,7 @@ import Account from 'components/Account';
 import AvatarProfile from 'components/AvatarProfile';
 import { PAGE_URL } from 'constants/url';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { isLoggedInVar } from 'provider/ApolloProvider';
 import { memo, useState } from 'react';
@@ -46,6 +47,9 @@ const HomeHeader = ({ me }: HomeHeaderProps) => {
       }
     },
   });
+
+  //TODO - subData가 생기면 알림 아이콘 변경 Badge 이용해서
+  console.log(subData);
 
   const handleLoginRedirect = () => {
     router.push(PAGE_URL.LOGIN);
@@ -104,9 +108,9 @@ const HomeHeader = ({ me }: HomeHeaderProps) => {
             />
           )}
         </Flex>
-        <button>
+        <Link href={PAGE_URL.NOTIFICATION}>
           <Image src={'/icons/NotificationOff.svg'} width={20} height={20} alt="notification" />
-        </button>
+        </Link>
       </Flex>
       <Flex className="absolute bottom-[-60px] left-1/2 -translate-x-1/2">
         {me?.account && <Account info={me?.account} />}

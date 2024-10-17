@@ -47,7 +47,15 @@ export default function BottomBar() {
               align="center"
               className="w-16 h-16 rounded-full bg-background drop-shadow-md"
             >
-              <Image src={'/icons/Money.svg'} width={40} height={40} alt={'bet'} />
+              <Image
+                src={'/icons/Money.svg'}
+                width={40}
+                height={40}
+                quality={50}
+                priority
+                loading="eager"
+                alt={'bet'}
+              />
             </Flex>
           </Flex>
         </Flex>

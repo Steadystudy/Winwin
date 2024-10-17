@@ -1,5 +1,3 @@
-'use client';
-
 import React, { MouseEventHandler, ReactNode } from 'react';
 
 type Size = 'small' | 'large';

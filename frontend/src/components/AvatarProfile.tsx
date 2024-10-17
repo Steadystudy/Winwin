@@ -1,5 +1,3 @@
-'use client';
-
 import { Avatar, Badge, Flex, Typography } from 'antd';
 import { UserOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { MouseEventHandler } from 'react';

@@ -4,6 +4,7 @@ import { Flex } from 'antd';
 import AvatarProfile from './AvatarProfile';
 import { Bet, BetStatus } from '__generated__/graphql';
 import { memo } from 'react';
+import { priceToString } from 'hooks/priceFormat';
 
 interface BetCardProps {
   bet: Bet;
@@ -48,7 +49,9 @@ const BetCard = ({ bet, onClick }: BetCardProps) => {
       </Flex>
       <Flex vertical className="w-1/3 items-center justify-center gap-8 text-center">
         <h2 className="w-full font-semibold text-2xl text-white truncate">{title}</h2>
-        <h3 className="w-full font-semibold text-xl text-white truncate">{totalAmount}원</h3>
+        <h3 className="w-full font-semibold text-xl text-white truncate">
+          {totalAmount && priceToString(totalAmount)}원
+        </h3>
       </Flex>
       <Flex align="center" className="w-1/3 pr-2 justify-end">
         {team2.map(({ name, id }) => (

@@ -8,6 +8,9 @@ const nextConfig = {
 
     return config;
   },
+  experimental: {
+    optimizePackageImports: ['feature'],
+  },
 };
 
 export default nextConfig;
